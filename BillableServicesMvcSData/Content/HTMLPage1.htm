@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="http://prototypejs.org/assets/2009/8/31/prototype.js"></script>
+    <script type="text/javascript">
+        function postParameters()
+        {
+            ajaxRequest = new Ajax.Request("http://127.0.0.1:22910/sdata/billserv/billserv/-/Customer",
+				            {
+				                method: 'post',
+				                parameters: "{'CustomerID': 5,'CustomerName': 'parameters.','CustomerKey': '5','TenantID': 1,'StreetAddress': 'Some street in irvine','City': 'Irvine','StateProvince': 'CA','PostalCode': '92692','Phone': '800-123-4567','AccountType': 0}"
+				            });
+				        }
+
+        function postBodyPayload() {
+            ajaxRequest = new Ajax.Request("http://127.0.0.1:22910/sdata/billserv/billserv/-/Customer",
+            {
+                method: 'post',
+                postBody: "{'CustomerID': 5,'CustomerName': 'postBody.','CustomerKey': '5','TenantID': 1,'StreetAddress': 'Some street in irvine','City': 'Irvine','StateProvince': 'CA','PostalCode': '92692','Phone': '800-123-4567','AccountType': 0}"
+            });
+        }
+
+    </script>
+
+</head>
+<body>
+<button type="button" onclick="postParameters()">Change Content</button>
+
+</body>
+</html>
