@@ -700,7 +700,7 @@
           <EntitySet Name="vwTenantChargesDailies" EntityType="BillableServicesModel.vwTenantChargesDaily" />
           <EntitySet Name="vwTenantChargesMonthlies" EntityType="BillableServicesModel.vwTenantChargesMonthly" />
           <EntitySet Name="vwTenantChargesWeeklies" EntityType="BillableServicesModel.vwTenantChargesWeekly" />
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="BillingSchedule">
           <Key>
             <PropertyRef Name="BillingScheduleID" />
@@ -1450,7 +1450,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -1471,13 +1471,13 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="BillableModel" ZoomLevel="93">
+      <Diagram Name="BillableModel" ZoomLevel="70">
         <EntityTypeShape EntityType="BillableServicesModel.BillingSchedule" Width="1.5" PointX="0.75" PointY="0.75" Height="1.787985026041667" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Contact" Width="1.5" PointX="2.75" PointY="0.75" Height="2.7494921874999996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Customer" Width="1.5" PointX="4.75" PointY="0.75" Height="2.9417936197916656" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Project" Width="1.5" PointX="0.75" PointY="4.75" Height="2.1725878906249996" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.ServiceCharge" Width="1.5" PointX="5.125" PointY="18.875" Height="2.5571907552083353" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.ServiceDetail" Width="1.5" PointX="4.75" PointY="4.75" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillableServicesModel.ServiceCharge" Width="1.5" PointX="9.625" PointY="16.375" Height="2.5571907552083353" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillableServicesModel.ServiceDetail" Width="1.5" PointX="7.375" PointY="16.75" Height="2.1725878906249996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.ServiceType" Width="1.5" PointX="6.75" PointY="0.75" Height="2.1725878906249996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.User" Width="1.5" PointX="6.75" PointY="3.75" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.vwBillingDetail" Width="1.5" PointX="4.75" PointY="7.75" Height="4.8648079427083353" IsExpanded="true" />
@@ -1497,14 +1497,14 @@
         <EntityTypeShape EntityType="BillableServicesModel.vwTenantChargesDaily" Width="1.5" PointX="8.75" PointY="12.75" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.vwTenantChargesMonthly" Width="1.5" PointX="12.75" PointY="10.75" Height="1.7879850260416674" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.vwTenantChargesWeekly" Width="1.5" PointX="2.75" PointY="13.75" Height="1.7879850260416674" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.ApprovedServiceCharge" Width="1.5" PointX="6.5" PointY="22.125" Height="1.2110807291666674" />
-        <InheritanceConnector EntityType="BillableServicesModel.ApprovedServiceCharge" >
-          <ConnectorPoint PointX="5.875" PointY="21.432190755208335" />
-          <ConnectorPoint PointX="5.875" PointY="21.75" />
-          <ConnectorPoint PointX="7.25" PointY="21.75" />
-          <ConnectorPoint PointX="7.25" PointY="22.125" />
+        <EntityTypeShape EntityType="BillableServicesModel.ApprovedServiceCharge" Width="1.5" PointX="11" PointY="19.625" Height="1.2110807291666674" />
+        <InheritanceConnector EntityType="BillableServicesModel.ApprovedServiceCharge" ManuallyRouted="false" >
+          <ConnectorPoint PointX="10.375" PointY="18.932190755208335" />
+          <ConnectorPoint PointX="10.375" PointY="19.25" />
+          <ConnectorPoint PointX="11.75" PointY="19.25" />
+          <ConnectorPoint PointX="11.75" PointY="19.625" />
         </InheritanceConnector>
-      </Diagram>
+        </Diagram>
     </Diagrams>
   </Designer>
 </edmx:Edmx>

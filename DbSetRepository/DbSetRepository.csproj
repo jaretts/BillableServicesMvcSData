@@ -42,9 +42,9 @@
     <Compile Include="DbContextRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SDataRepository\SDataRepository.csproj">
-      <Project>{71E5ECC3-5351-48C2-A173-B3C68DE64933}</Project>
-      <Name>SDataRepository</Name>
+    <ProjectReference Include="..\..\..\..\..\..\Users\jaretts\Documents\Visual Studio 2010\Projects\MongoSDataApi\Sage.SDataHandler\Sage.SDataHandler.csproj">
+      <Project>{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}</Project>
+      <Name>Sage.SDataHandler</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
