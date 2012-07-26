@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Sage.SDataHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Sage.SDataHandler.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="EntityFramework">
@@ -42,10 +46,7 @@
     <Compile Include="DbContextRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Users\jaretts\Documents\Visual Studio 2010\Projects\MongoSDataApi\Sage.SDataHandler\Sage.SDataHandler.csproj">
-      <Project>{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}</Project>
-      <Name>Sage.SDataHandler</Name>
-    </ProjectReference>
+    <Content Include="Sage.SDataHandler.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

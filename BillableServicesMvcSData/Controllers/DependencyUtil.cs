@@ -19,12 +19,6 @@ namespace BillableServicesMvcSData.Controllers
 			internal static void RegisterDependencyResolver(HttpConfiguration httpConfig)
 			{
 					UnityContainer unity = new UnityContainer();
-					unity.RegisterType<AbcChargeController>();
-	
-					// Register the Repository for the Controller
-					unity.RegisterType<IRepository<AbcCharge>, DbContextRepository<AbcCharge>>(
-										new HierarchicalLifetimeManager(),
-										new InjectionConstructor(new BillableServicesEntities()));
 					unity.RegisterType<ApprovedServiceChargeController>();
 	
 					// Register the Repository for the Controller

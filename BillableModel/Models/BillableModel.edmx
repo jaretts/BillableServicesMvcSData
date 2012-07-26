@@ -1471,13 +1471,13 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="BillableModel" ZoomLevel="70">
+      <Diagram Name="BillableModel" ZoomLevel="80">
         <EntityTypeShape EntityType="BillableServicesModel.BillingSchedule" Width="1.5" PointX="0.75" PointY="0.75" Height="1.787985026041667" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Contact" Width="1.5" PointX="2.75" PointY="0.75" Height="2.7494921874999996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Customer" Width="1.5" PointX="4.75" PointY="0.75" Height="2.9417936197916656" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Project" Width="1.5" PointX="0.75" PointY="4.75" Height="2.1725878906249996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.ServiceCharge" Width="1.5" PointX="9.625" PointY="16.375" Height="2.5571907552083353" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.ServiceDetail" Width="1.5" PointX="7.375" PointY="16.75" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillableServicesModel.ServiceDetail" Width="1.5" PointX="4" PointY="16.125" Height="2.1725878906249996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.ServiceType" Width="1.5" PointX="6.75" PointY="0.75" Height="2.1725878906249996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.User" Width="1.5" PointX="6.75" PointY="3.75" Height="2.3648893229166674" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.vwBillingDetail" Width="1.5" PointX="4.75" PointY="7.75" Height="4.8648079427083353" IsExpanded="true" />

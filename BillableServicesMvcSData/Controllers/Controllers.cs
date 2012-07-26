@@ -12,21 +12,6 @@ using SDataRepository;
 namespace BillableServicesMvcSData.Controllers
 {
 	
-	    public class AbcChargeController : DefaultController<AbcCharge>
-	    { 
-			public AbcChargeController(IRepository<AbcCharge> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public AbcCharge GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.AbcChargeID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
 	    public class ApprovedServiceChargeController : DefaultController<ApprovedServiceCharge>
 	    { 
 			public ApprovedServiceChargeController(IRepository<ApprovedServiceCharge> repo) : base(repo) {	}
