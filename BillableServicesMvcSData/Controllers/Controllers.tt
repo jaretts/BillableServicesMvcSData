@@ -141,6 +141,7 @@ using System.Net.Http;
 using System.Web.Http;
 using BillableModel.Models;
 using SDataRepository;
+using Sage.SDataHandler;
 
 namespace <#= namespaceName #>
 {
@@ -167,11 +168,18 @@ namespace <#= namespaceName #>
 		public <#= className#>(IRepository<<#=modelName#>> repo) : base(repo) {	}
 
         [HttpGet]
-        [ActionName("SDataSingleResourceKind")] 
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
         override public <#=modelName#> GetSingle(int selector, String select)
         {
             //return base.GetCollection(select).FirstOrDefault(y => y.<#=modelName#>ID == selector);
             return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+        }
+
+        [HttpGet]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+        override public <#=modelName#> GetSingle(int selector)
+        {
+            return GetSingle(selector, null);
         }
 
 	}

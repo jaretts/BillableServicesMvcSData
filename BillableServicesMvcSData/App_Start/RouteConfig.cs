@@ -16,7 +16,7 @@ namespace BillableServicesMvcSData
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            SDataRoutesUtil.RegisterSDataRoutes(routes);
+            SDataRoutesUtil.RegisterSDataRoutes("sdata/billserv/billserv/-", routes);
 
             routes.MapRoute(
                name: "Default",

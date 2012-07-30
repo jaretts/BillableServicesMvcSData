@@ -26,6 +26,8 @@ namespace DbSetRepository
 
         public IQueryable<T> GetAll(string select)
         {
+            //db.Configuration.ProxyCreationEnabled = false;
+
             DbSet<T> set = db.Set<T>();
             IQueryable<T> retVal;
 

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillableModel", "BillableMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSetRepository", "DbSetRepository\DbSetRepository.csproj", "{719FBAA6-FBE5-4C99-93AA-9E97BBF8FD39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.SDataHandler", "Sage.SDataHandler\Sage.SDataHandler.csproj", "{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{719FBAA6-FBE5-4C99-93AA-9E97BBF8FD39}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{719FBAA6-FBE5-4C99-93AA-9E97BBF8FD39}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{719FBAA6-FBE5-4C99-93AA-9E97BBF8FD39}.Release|x86.ActiveCfg = Release|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

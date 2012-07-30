@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using BillableModel.Models;
 using SDataRepository;
+using Sage.SDataHandler;
 
 namespace BillableServicesMvcSData.Controllers
 {
@@ -17,11 +18,18 @@ namespace BillableServicesMvcSData.Controllers
 			public ApprovedServiceChargeController(IRepository<ApprovedServiceCharge> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public ApprovedServiceCharge GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.ApprovedServiceChargeID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public ApprovedServiceCharge GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -32,11 +40,18 @@ namespace BillableServicesMvcSData.Controllers
 			public BillingScheduleController(IRepository<BillingSchedule> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public BillingSchedule GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.BillingScheduleID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public BillingSchedule GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -47,11 +62,18 @@ namespace BillableServicesMvcSData.Controllers
 			public ContactController(IRepository<Contact> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public Contact GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.ContactID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public Contact GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -62,11 +84,18 @@ namespace BillableServicesMvcSData.Controllers
 			public CustomerController(IRepository<Customer> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public Customer GetSingle(int selector, String select)
 	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.CustomerID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	            return base.GetCollection(select).FirstOrDefault(y => y.CustomerID == selector);
+	            //return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public Customer GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -77,11 +106,18 @@ namespace BillableServicesMvcSData.Controllers
 			public ProjectController(IRepository<Project> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public Project GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.ProjectID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public Project GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -92,11 +128,18 @@ namespace BillableServicesMvcSData.Controllers
 			public ServiceChargeController(IRepository<ServiceCharge> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public ServiceCharge GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.ServiceChargeID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public ServiceCharge GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -107,11 +150,18 @@ namespace BillableServicesMvcSData.Controllers
 			public ServiceDetailController(IRepository<ServiceDetail> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public ServiceDetail GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.ServiceDetailID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public ServiceDetail GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -122,11 +172,18 @@ namespace BillableServicesMvcSData.Controllers
 			public ServiceTypeController(IRepository<ServiceType> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public ServiceType GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.ServiceTypeID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	        }
+	
+	        [HttpGet]
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public ServiceType GetSingle(int selector)
+	        {
+	            return GetSingle(selector, null);
 	        }
 	
 		}
@@ -137,266 +194,18 @@ namespace BillableServicesMvcSData.Controllers
 			public UserController(IRepository<User> repo) : base(repo) {	}
 	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
 	        override public User GetSingle(int selector, String select)
 	        {
 	            //return base.GetCollection(select).FirstOrDefault(y => y.UserID == selector);
 	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
 	        }
 	
-		}
-	
-	
-	    public class vwBillingDetailController : DefaultController<vwBillingDetail>
-	    { 
-			public vwBillingDetailController(IRepository<vwBillingDetail> repo) : base(repo) {	}
-	
 	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwBillingDetail GetSingle(int selector, String select)
+	        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)] 
+	        override public User GetSingle(int selector)
 	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwBillingDetailID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwBillingDetailIndexController : DefaultController<vwBillingDetailIndex>
-	    { 
-			public vwBillingDetailIndexController(IRepository<vwBillingDetailIndex> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwBillingDetailIndex GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwBillingDetailIndexID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwBillingScheduleController : DefaultController<vwBillingSchedule>
-	    { 
-			public vwBillingScheduleController(IRepository<vwBillingSchedule> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwBillingSchedule GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwBillingScheduleID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwClientServiceChargeController : DefaultController<vwClientServiceCharge>
-	    { 
-			public vwClientServiceChargeController(IRepository<vwClientServiceCharge> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwClientServiceCharge GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwClientServiceChargeID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwProjectController : DefaultController<vwProject>
-	    { 
-			public vwProjectController(IRepository<vwProject> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwProject GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwProjectID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsContactController : DefaultController<vwsContact>
-	    { 
-			public vwsContactController(IRepository<vwsContact> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsContact GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsContactID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsCustomerController : DefaultController<vwsCustomer>
-	    { 
-			public vwsCustomerController(IRepository<vwsCustomer> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsCustomer GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsCustomerID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwServiceChargeController : DefaultController<vwServiceCharge>
-	    { 
-			public vwServiceChargeController(IRepository<vwServiceCharge> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwServiceCharge GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwServiceChargeID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsProjectController : DefaultController<vwsProject>
-	    { 
-			public vwsProjectController(IRepository<vwsProject> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsProject GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsProjectID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsServiceChargeController : DefaultController<vwsServiceCharge>
-	    { 
-			public vwsServiceChargeController(IRepository<vwsServiceCharge> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsServiceCharge GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsServiceChargeID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsServiceChargeDetailController : DefaultController<vwsServiceChargeDetail>
-	    { 
-			public vwsServiceChargeDetailController(IRepository<vwsServiceChargeDetail> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsServiceChargeDetail GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsServiceChargeDetailID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsServiceTypeController : DefaultController<vwsServiceType>
-	    { 
-			public vwsServiceTypeController(IRepository<vwsServiceType> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsServiceType GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsServiceTypeID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsUserController : DefaultController<vwsUser>
-	    { 
-			public vwsUserController(IRepository<vwsUser> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsUser GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsUserID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwsUserChargesDailyController : DefaultController<vwsUserChargesDaily>
-	    { 
-			public vwsUserChargesDailyController(IRepository<vwsUserChargesDaily> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwsUserChargesDaily GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwsUserChargesDailyID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwTenantChargesDailyController : DefaultController<vwTenantChargesDaily>
-	    { 
-			public vwTenantChargesDailyController(IRepository<vwTenantChargesDaily> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwTenantChargesDaily GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwTenantChargesDailyID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwTenantChargesMonthlyController : DefaultController<vwTenantChargesMonthly>
-	    { 
-			public vwTenantChargesMonthlyController(IRepository<vwTenantChargesMonthly> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwTenantChargesMonthly GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwTenantChargesMonthlyID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
-	        }
-	
-		}
-	
-	
-	    public class vwTenantChargesWeeklyController : DefaultController<vwTenantChargesWeekly>
-	    { 
-			public vwTenantChargesWeeklyController(IRepository<vwTenantChargesWeekly> repo) : base(repo) {	}
-	
-	        [HttpGet]
-	        [ActionName("SDataSingleResourceKind")] 
-	        override public vwTenantChargesWeekly GetSingle(int selector, String select)
-	        {
-	            //return base.GetCollection(select).FirstOrDefault(y => y.vwTenantChargesWeeklyID == selector);
-	            return base.GetCollection(select).FirstOrDefault(y => y.ID == selector);
+	            return GetSingle(selector, null);
 	        }
 	
 		}

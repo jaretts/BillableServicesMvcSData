@@ -17,6 +17,11 @@ namespace BillableModel.Models
     [DataContract]
     public partial class ServiceCharge : MobileModelEntity
     {
+        public ServiceCharge()
+        {
+            this.ServiceDetails = new HashSet<ServiceDetail>();
+        }
+    
     	[DataMember]
         public int ServiceChargeID { get; set; }
     	[DataMember]
@@ -33,6 +38,9 @@ namespace BillableModel.Models
         public string Recipient { get; set; }
     	[DataMember]
         public string Note { get; set; }
+    
+    	[DataMember]
+        public virtual ICollection<ServiceDetail> ServiceDetails { get; set; }
     }
     
 }

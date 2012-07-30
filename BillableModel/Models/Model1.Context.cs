@@ -33,22 +33,5 @@ namespace BillableModel.Models
         public DbSet<ServiceDetail> ServiceDetails { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<vwBillingDetail> vwBillingDetails { get; set; }
-        public DbSet<vwBillingDetailIndex> vwBillingDetailIndexes { get; set; }
-        public DbSet<vwBillingSchedule> vwBillingSchedules { get; set; }
-        public DbSet<vwClientServiceCharge> vwClientServiceCharges { get; set; }
-        public DbSet<vwProject> vwProjects { get; set; }
-        public DbSet<vwsContact> vwsContacts { get; set; }
-        public DbSet<vwsCustomer> vwsCustomers { get; set; }
-        public DbSet<vwServiceCharge> vwServiceCharges { get; set; }
-        public DbSet<vwsProject> vwsProjects { get; set; }
-        public DbSet<vwsServiceChargeDetail> vwsServiceChargeDetails { get; set; }
-        public DbSet<vwsServiceCharge> vwsServiceCharges { get; set; }
-        public DbSet<vwsServiceType> vwsServiceTypes { get; set; }
-        public DbSet<vwsUserChargesDaily> vwsUserChargesDailies { get; set; }
-        public DbSet<vwsUser> vwsUsers { get; set; }
-        public DbSet<vwTenantChargesDaily> vwTenantChargesDailies { get; set; }
-        public DbSet<vwTenantChargesMonthly> vwTenantChargesMonthlies { get; set; }
-        public DbSet<vwTenantChargesWeekly> vwTenantChargesWeeklies { get; set; }
     }
 }

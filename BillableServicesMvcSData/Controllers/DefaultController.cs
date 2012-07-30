@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Reflection;
 using SDataRepository;
+using Sage.SDataHandler;
 
 namespace BillableServicesMvcSData.Controllers
 {
@@ -23,7 +24,7 @@ namespace BillableServicesMvcSData.Controllers
         /// Must have Queryable attribute or OData does not work
         [Queryable]
         [HttpGet]
-        [ActionName("SDataCollection")]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_COLLECTION)]
         public virtual IQueryable<T> GetCollection(string select)
         {
             IQueryable<T> retVal = respository.GetAll(select);
@@ -44,7 +45,7 @@ namespace BillableServicesMvcSData.Controllers
 
         // GET api/product/5
         [HttpGet]
-        [ActionName("SDataSingleResourceKind")]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)]
         public virtual T GetSingle(int selector)
         {
             return respository.GetSingle(selector, null);
@@ -52,14 +53,14 @@ namespace BillableServicesMvcSData.Controllers
 
         // GET api/product/5
         [HttpGet]
-        [ActionName("SDataSingleResourceKind")]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)]
         public virtual T GetSingle(int selector, String select)
         {
             return respository.GetSingle(selector, select);
         }
 
         [HttpGet]
-        [ActionName("GetTemplate")]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_TEMPLATE)]
         virtual public T GetTemplate()
         {
             return respository.GetTemplate();
@@ -67,7 +68,7 @@ namespace BillableServicesMvcSData.Controllers
 
         // PUT api/customers/5
         [HttpPut]
-        [ActionName("SDataSingleResourceKind")]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)]
         public HttpResponseMessage Put(int selector, String select, T value)
         {
             T resourceModified = null;
@@ -107,7 +108,7 @@ namespace BillableServicesMvcSData.Controllers
 
         // POST single resource post; client sent single resource
         [HttpPost]
-        [ActionName("SDataCollection")]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_COLLECTION)]
         public HttpResponseMessage Post(T value)
         {
             //T addedResource = respository.Post(value);
@@ -127,11 +128,12 @@ namespace BillableServicesMvcSData.Controllers
 
 
         [HttpDelete]
-        [ActionName("SDataSingleResourceKindDelete")]
+        [ActionName(SDataRoutesUtil.SDATA_ACTION_DELETE)]
         public HttpResponseMessage Delete(int selector)
         {
             HttpResponseMessage retValue;
             T oldValue = GetSingle(selector, null);
+
 
             if (oldValue == null)
             {
