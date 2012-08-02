@@ -5,7 +5,8 @@ using System.Text;
 using System.Data.Entity;
 using System.Reflection;
 using System.Data.Entity.Infrastructure;
-using SDataRepository;
+using Sage.SData.Repository;
+using BillableModel.Models;
 
 namespace DbSetRepository
 {
@@ -13,11 +14,10 @@ namespace DbSetRepository
     {
         DbContext db;
 
-        public DbContextRepository(DbContext initDb)
+        public DbContextRepository()
         {
-            db = initDb;
+            db = new BillableServicesEntities();
         }
-
 
         public virtual T GetSingle(int selector, String select)
         {

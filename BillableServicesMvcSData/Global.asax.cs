@@ -9,7 +9,7 @@ using System.Web.Routing;
 using Sage.SDataHandler;
 using Microsoft.Practices.Unity;
 using BillableServicesMvcSData.Controllers;
-using SDataRepository;
+using Sage.SData.Repository;
 using BillableModel.Models;
 using DbSetRepository;
 
@@ -28,9 +28,22 @@ namespace BillableServicesMvcSData
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            DependencyUtil.RegisterDependencyResolver(GlobalConfiguration.Configuration);
-            GlobalConfiguration.Configuration.MessageHandlers.Add(new SDataHandler());
+            //DependencyUtil.RegisterDependencyResolver(GlobalConfiguration.Configuration);
 
+            RegisterControllerDependencies();
+
+            GlobalConfiguration.Configuration.MessageHandlers.Add(new SDataHandler());
+        }
+
+        private static void RegisterControllerDependencies()
+        {
+            string modelLocation = @"C:\Apps\workspaces\web api demos\billableservices\BillableServicesMvcSData\BillableModel\Models";
+            string modelNameSpace = "BillableModel.Models";
+            string repositoryNameSpace = "DbSetRepository";
+            string pathToAssemblies = @"C:\Apps\workspaces\web api demos\billableservices\BillableServicesMvcSData\BillableServicesMvcSData\bin";
+            List<string> requiredAssemblies = new List<string>() { "BillableModel.dll", "DbSetRepository.dll" };
+
+            DependencyManager.RegisterDependencyResolver(GlobalConfiguration.Configuration, modelLocation, modelNameSpace, repositoryNameSpace, requiredAssemblies, pathToAssemblies);
         }
 
     }

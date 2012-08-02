@@ -42,6 +42,10 @@
     <Compile Include="DbContextRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BillableModel\BillableModel.csproj">
+      <Project>{6343CF16-E645-4FC5-A4B0-7E2C40EFE158}</Project>
+      <Name>BillableModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sage.SDataHandler\Sage.SDataHandler.csproj">
       <Project>{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}</Project>
       <Name>Sage.SDataHandler</Name>

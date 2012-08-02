@@ -196,8 +196,7 @@ void WriteHeader(EntityFrameworkTemplateFileManager fileManager)
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using SDataRepository;
-
+using Sage.SData.Repository;
 <#+
     fileManager.EndBlock();
 }

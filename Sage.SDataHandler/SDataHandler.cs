@@ -15,6 +15,7 @@ namespace Sage.SDataHandler
         protected override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
         {
+
             Uri originalUri = request.RequestUri;
 
             // check if a param like format=json was in original uri and set Accept header

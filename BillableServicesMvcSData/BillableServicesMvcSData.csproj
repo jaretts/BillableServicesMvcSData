@@ -132,15 +132,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\Controllers.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Controllers.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Controllers\DefaultController.cs" />
-    <Compile Include="Controllers\DependencyUtil.cs">
-      <DependentUpon>Controllers.tt</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -195,7 +186,9 @@
     <Content Include="Scripts\knockout-2.0.0.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Content\HTMLPage1.htm" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -251,12 +244,6 @@
       <Project>{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}</Project>
       <Name>Sage.SDataHandler</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Controllers\Controllers.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Controllers.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

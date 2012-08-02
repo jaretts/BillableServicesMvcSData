@@ -5,10 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Reflection;
-using SDataRepository;
+using Sage.SData.Repository;
 using Sage.SDataHandler;
 
-namespace BillableServicesMvcSData.Controllers
+namespace Sage.SData.Controllers
 {
     public class DefaultController<T> : ApiController where T : MobileModelEntity // class
     {

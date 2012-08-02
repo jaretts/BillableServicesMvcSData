@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>System.Web.Mvc.Composition</name>
+    </assembly>
+    <members>
+        <member name="T:System.Web.Mvc.Composition.CompositeControllerFactory">
+            <summary>
+            An implementation of <see cref="T:System.Web.Mvc.IControllerFactory"/> that composes other IControllerFactory instances.
+            </summary>
+        </member>
+        <member name="M:System.Web.Mvc.Composition.CompositeControllerFactory.#ctor(System.Collections.Generic.IEnumerable{System.Web.Mvc.IControllerFactory})">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Web.Mvc.Composition.CompositeControllerFactory"/> class.
+            </summary>
+            <param name="factories">The controller factories.</param>
+        </member>
+        <member name="M:System.Web.Mvc.Composition.CompositeControllerFactory.#ctor(System.Web.Mvc.IControllerFactory[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Web.Mvc.Composition.CompositeControllerFactory"/> class.
+            </summary>
+            <param name="factories">The controller factories.</param>
+        </member>
+        <member name="M:System.Web.Mvc.Composition.CompositeControllerFactory.CreateController(System.Web.Routing.RequestContext,System.String)">
+            <summary>
+            Creates the specified controller by using the specified request context.
+            </summary>
+            <param name="requestContext">The request context.</param>
+            <param name="controllerName">The name of the controller.</param>
+            <returns>
+            The controller.
+            </returns>
+        </member>
+        <member name="P:System.Web.Mvc.Composition.CompositeControllerFactory.Factories">
+            <summary>
+            Gets the factories supplied through one of the constructors.
+            </summary>
+        </member>
+    </members>
+</doc>

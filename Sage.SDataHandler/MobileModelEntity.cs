@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace SDataRepository
+namespace Sage.SData.Repository
 {
     [DataContract]
     public abstract class  MobileModelEntity
