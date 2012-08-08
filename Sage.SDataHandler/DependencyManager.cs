@@ -23,47 +23,33 @@ namespace Sage.SDataHandler
 
         public const string GEN_DLL_NAME = "GenController.dll";
 
-        string pathToAssemblies; //@"C:\pvxtst\billable"; //
+        static string pathToAssemblies = HttpContext.Current.Server.MapPath("~/bin");
 
         static DependencyManager single;
 
-        static public DependencyManager getInstance()
-        {
-            if (single == null)
-            {
-                single = new DependencyManager();
-            }
-
-            return single;
-        }
-
-        private DependencyManager()
-        {
-            pathToAssemblies = HttpContext.Current.Server.MapPath("~/bin");
-        }
 
         // just builds simple controllers
-        public void BuildDefaultControllers()
+        static public void BuildDefaultControllers()
         {
             string[] files = Directory.GetFileSystemEntries(pathToAssemblies, "*.dll");
             BuildDefaultControllers(files);
         }
 
         // just builds simple controllers
-        public void BuildDefaultControllers(string[] assembliesToSearch)
+        static public void BuildDefaultControllers(string[] assembliesToSearch)
         {
             Assembly assembly = GenerateSourceAndCompile(false, assembliesToSearch);
         }
 
         // Builds controllers and handles Dependency injection with unity and IOC
-        public void RegisterDependencyResolver(HttpConfiguration httpConfig)
+        static public void RegisterDependencyResolver(HttpConfiguration httpConfig)
         {
             string[] files = Directory.GetFileSystemEntries(pathToAssemblies, "*.dll");
             RegisterDependencyResolver(httpConfig, files);
         }
 
         // Builds controllers and handles Dependency injection with unity and IOC
-        public void RegisterDependencyResolver(HttpConfiguration httpConfig, string[] assembliesToSearch)
+        static public void RegisterDependencyResolver(HttpConfiguration httpConfig, string[] assembliesToSearch)
         {
             Assembly assembly = GenerateSourceAndCompile(true, assembliesToSearch);
             if (assembly != null)
@@ -73,7 +59,7 @@ namespace Sage.SDataHandler
             }
         }
 
-        private Assembly GenerateSourceAndCompile(bool generateWithDependencyResolver, string[] files)
+        static private Assembly GenerateSourceAndCompile(bool generateWithDependencyResolver, string[] files)
         {
             Assembly assembly = GetPreviousBuild();
             if (assembly != null)
@@ -155,7 +141,7 @@ namespace Sage.SDataHandler
             return null;
         }
 
-        public bool IsApiControllerType(Type type)
+        static public bool IsApiControllerType(Type type)
         {
             if(type != null)
             {
@@ -174,7 +160,7 @@ namespace Sage.SDataHandler
             return false;
         }
 
-        public void RegisterDependencyResolver(HttpConfiguration httpConfig,
+        static public void RegisterDependencyResolver(HttpConfiguration httpConfig,
                                                         string modelLocation,
                                                         string modelNameSpace,
                                                         string repositoryNameSpace,
@@ -190,14 +176,14 @@ namespace Sage.SDataHandler
             DoRegisterDependencies(httpConfig, assembly);
         }
 
-        private void DoRegisterDependencies(HttpConfiguration httpConfig, Assembly assembly)
+        static private void DoRegisterDependencies(HttpConfiguration httpConfig, Assembly assembly)
         {
             IDependencyUtil anobj = (IDependencyUtil)assembly.CreateInstance("Sage.SData.Compiler.DependencyUtil");
             UnityContainer unity = anobj.RegisterDependencyResolver(httpConfig);
             httpConfig.DependencyResolver = new IoCContainer(unity);
         }
 
-        private Assembly DoCompile(List<string> requiredAssemblies, string pathToAssemblies, string asSourceStr)
+        static private Assembly DoCompile(List<string> requiredAssemblies, string pathToAssemblies, string asSourceStr)
         {
             // path to where SDataHandler dll and BillableModel.dll arez
             Assembly assembly = GetPreviousBuild();
@@ -218,7 +204,7 @@ namespace Sage.SDataHandler
             return assembly;
         }
 
-        private Assembly GetPreviousBuild()
+        static private Assembly GetPreviousBuild()
         {
             Assembly assembly = null;
             string genCodeAssembly = pathToAssemblies + "\\" + GEN_DLL_NAME;

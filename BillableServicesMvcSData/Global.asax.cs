@@ -33,7 +33,7 @@ namespace BillableServicesMvcSData
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            DependencyManager.getInstance().BuildDefaultControllers();
+            DependencyManager.BuildDefaultControllers();
             GlobalConfiguration.Configuration.MessageHandlers.Add(new SDataHandler());
 
         }
