@@ -10,9 +10,9 @@ using Sage.SData.Repository;
 
 namespace BillableServicesMvcSData.Controllers
 {
-    public class CustomerController : DefaultController<BillableModel.Models.Customer>
+    public class MyCustomerController : DefaultController<BillableModel.Models.Customer>
     {
-        public CustomerController() : base(new DbSetRepository.DbContextRepository<BillableModel.Models.Customer>()) { }
+        public MyCustomerController() : base(new DbSetRepository.DbContextRepository<BillableModel.Models.Customer>()) { }
 
 
         [HttpGet]

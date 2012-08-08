@@ -84,7 +84,7 @@ namespace Sage.SDataHandler
             List<string> requiredAssemblies = new List<string>();
             Dictionary<string, string> modelClassNameMap = new Dictionary<string, string>();
 
-            List<Type> discoveredControllers = new List<Type>();
+            List<string> discoveredControllers = new List<string>();
 
             string fullNameOfRepo = null;
 
@@ -108,7 +108,7 @@ namespace Sage.SDataHandler
                     else if (IsApiControllerType(type))
                     {
                         // found a controller
-                        discoveredControllers.Add(type);
+                        discoveredControllers.Add(type.Name);
                     }
                     else if (fullNameOfRepo == null)
                     {
@@ -133,34 +133,6 @@ namespace Sage.SDataHandler
 
             if (fullNameOfRepo != null)
             {
-                foreach(Type controller in discoveredControllers)
-                {
-                    if(controller.IsGenericType)
-                    {
-                        // get the model entity by type
-                        Type type = controller.GetGenericArguments()[0];
-                    }
-                    else
-                    {
-                        // try to derive model type by MVC controller nameing convention
-                        string cntrlName = controller.Name;
-                        int ndx = cntrlName.ToLower().IndexOf("controller");
-                        string modelName;
-                        if( ndx > 0)
-                        {
-                            modelName = cntrlName.Remove(ndx);
-                        }
-                        else
-                        {
-                            modelName = cntrlName;
-                        }
-
-                        if (modelClassNameMap.ContainsKey(modelName))
-                        {
-                            modelClassNameMap.Remove(modelName);
-                        }
-                    }
-                }
 
                 string[] modelClasses = modelClassNameMap.Values.ToArray<string>();
 
@@ -172,7 +144,7 @@ namespace Sage.SDataHandler
                 }
                 else
                 {
-                    ControllerTemplate3 prtt = new ControllerTemplate3(modelClasses, fullNameOfRepo);
+                    ControllerTemplate3 prtt = new ControllerTemplate3(modelClasses, fullNameOfRepo, discoveredControllers);
                     source = prtt.TransformText();
                 }
 

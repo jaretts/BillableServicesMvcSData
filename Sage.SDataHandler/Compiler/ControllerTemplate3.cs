@@ -19,10 +19,11 @@ namespace Sage.SData.Compiler
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class ControllerTemplate3 : ControllerTemplate3Base
     {
-        public ControllerTemplate3(string[] init_modelClassList, string init_repositoryFullClassName)
+        public ControllerTemplate3(string[] init_modelClassList, string init_repositoryFullClassName, List<string> userControllers)
         {
             this._modelClassListField = init_modelClassList;
             this._repositoryFullClassNameField = init_repositoryFullClassName;
+            this._userControllerListField = userControllers;
         }
 
         public virtual string TransformText()
@@ -30,7 +31,7 @@ namespace Sage.SData.Compiler
             this.Write(" \r\n");
             this.Write("\r\n");
 
-#line 11 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 12 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
 
             // set these variables to values appropriate for your Solution:
             string namespaceName = "GenController.Controllers";
@@ -41,14 +42,14 @@ namespace Sage.SData.Compiler
             this.Write(" \r\n\r\nusing System;\r\nusing Sage.SData.Repository;\r\nusing Sage.SData.Controllers;\r\n" +
                     "using System.Collections.Generic; \r\nusing System.Web.Http;\r\n\r\nnamespace ");
 
-#line 22 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 23 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(namespaceName));
 
 #line default
 #line hidden
             this.Write("\r\n{\r\n");
 
-#line 24 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 25 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
 
             PushIndent("\t");
 
@@ -57,7 +58,7 @@ namespace Sage.SData.Compiler
 #line hidden
             this.Write("\r\n");
 
-#line 28 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 29 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
 
 
             foreach (string modelClassName in modelClassList)
@@ -76,47 +77,50 @@ namespace Sage.SData.Compiler
 
                 className += "Controller";
 
+                if (userControllerList.Contains(className))
+                    continue;
+
 
 #line default
 #line hidden
                 this.Write(" public class ");
 
-#line 46 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 50 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
                 this.Write(this.ToStringHelper.ToStringWithCulture(className));
 
 #line default
 #line hidden
                 this.Write(" : DefaultController<");
 
-#line 46 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 50 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
                 this.Write(this.ToStringHelper.ToStringWithCulture(modelClassName));
 
 #line default
 #line hidden
                 this.Write(">\r\n { \r\n\tpublic ");
 
-#line 48 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 52 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
                 this.Write(this.ToStringHelper.ToStringWithCulture(className));
 
 #line default
 #line hidden
                 this.Write("() : base( new ");
 
-#line 48 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 52 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
                 this.Write(this.ToStringHelper.ToStringWithCulture(repositoryFullClassName));
 
 #line default
 #line hidden
                 this.Write("<");
 
-#line 48 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 52 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
                 this.Write(this.ToStringHelper.ToStringWithCulture(modelClassName));
 
 #line default
 #line hidden
                 this.Write(">() ){}\r\n }\r\n");
 
-#line 50 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 54 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
 
             } // close for each
 
@@ -124,7 +128,7 @@ namespace Sage.SData.Compiler
 #line default
 #line hidden
 
-#line 53 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+#line 57 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
 
             PopIndent();
 
@@ -136,6 +140,19 @@ namespace Sage.SData.Compiler
         }
 
 #line 1 "C:\Apps\workspaces\web api demos\billableservices\ConsoleApplication2\ClassLibrary1\ControllerTemplate3.tt"
+
+        private global::System.Collections.Generic.List<string> _userControllerListField;
+
+        /// <summary>
+        /// Access the userControllerList parameter of the template.
+        /// </summary>
+        private global::System.Collections.Generic.List<string> userControllerList
+        {
+            get
+            {
+                return this._userControllerListField;
+            }
+        }
 
         private string[] _modelClassListField;
 
@@ -168,6 +185,36 @@ namespace Sage.SData.Compiler
         {
             if ((this.Errors.HasErrors == false))
             {
+                bool userControllerListValueAcquired = false;
+                if (this.Session.ContainsKey("userControllerList"))
+                {
+                    if ((typeof(global::System.Collections.Generic.List<string>).IsAssignableFrom(this.Session["userControllerList"].GetType()) == false))
+                    {
+                        this.Error("The type \'System.Collections.Generic.List<string>\' of the parameter \'userControll" +
+                                "erList\' did not match the type of the data passed to the template.");
+                    }
+                    else
+                    {
+                        this._userControllerListField = ((global::System.Collections.Generic.List<string>)(this.Session["userControllerList"]));
+                        userControllerListValueAcquired = true;
+                    }
+                }
+                if ((userControllerListValueAcquired == false))
+                {
+                    object data = global::System.Runtime.Remoting.Messaging.CallContext.LogicalGetData("userControllerList");
+                    if ((data != null))
+                    {
+                        if ((typeof(global::System.Collections.Generic.List<string>).IsAssignableFrom(data.GetType()) == false))
+                        {
+                            this.Error("The type \'System.Collections.Generic.List<string>\' of the parameter \'userControll" +
+                                    "erList\' did not match the type of the data passed to the template.");
+                        }
+                        else
+                        {
+                            this._userControllerListField = ((global::System.Collections.Generic.List<string>)(data));
+                        }
+                    }
+                }
                 bool modelClassListValueAcquired = false;
                 if (this.Session.ContainsKey("modelClassList"))
                 {
