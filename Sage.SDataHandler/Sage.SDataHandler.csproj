@@ -50,6 +50,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler\ControllerTemplate2.cs" />
+    <Compile Include="Compiler\ControllerTemplate3.cs" />
     <Compile Include="Compiler\CsTextCompiler.cs" />
     <Compile Include="Compiler\IDependencyUtil.cs" />
     <Compile Include="Compiler\IocContainer.cs" />

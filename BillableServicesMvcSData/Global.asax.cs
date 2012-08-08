@@ -12,6 +12,10 @@ using BillableServicesMvcSData.Controllers;
 using Sage.SData.Repository;
 using BillableModel.Models;
 using DbSetRepository;
+using Sage.SData.Compiler;
+using System.IO;
+using System.Reflection;
+using Sage.SDataHandler.Compiler;
 
 namespace BillableServicesMvcSData
 {
@@ -20,6 +24,7 @@ namespace BillableServicesMvcSData
 
     public class WebApiApplication : System.Web.HttpApplication
     {
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -28,14 +33,14 @@ namespace BillableServicesMvcSData
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //DependencyUtil.RegisterDependencyResolver(GlobalConfiguration.Configuration);
-
-            RegisterControllerDependencies();
-
+            DependencyManager.getInstance().BuildDefaultControllers();
             GlobalConfiguration.Configuration.MessageHandlers.Add(new SDataHandler());
+
         }
 
-        private static void RegisterControllerDependencies()
+
+        /* if you want lots of control can provide lots of information to Dependency Resolver
+        private static void RegisterControllerDependenciesVerbose()
         {
             string modelLocation = @"C:\Apps\workspaces\web api demos\billableservices\BillableServicesMvcSData\BillableModel\Models";
             string modelNameSpace = "BillableModel.Models";
@@ -44,7 +49,7 @@ namespace BillableServicesMvcSData
             List<string> requiredAssemblies = new List<string>() { "BillableModel.dll", "DbSetRepository.dll" };
 
             DependencyManager.RegisterDependencyResolver(GlobalConfiguration.Configuration, modelLocation, modelNameSpace, repositoryNameSpace, requiredAssemblies, pathToAssemblies);
-        }
+        }*/
 
     }
 }

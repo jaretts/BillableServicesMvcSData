@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.Dependencies;
 using Microsoft.Practices.Unity;
 using Sage.SData.Repository;
 using Sage.SData.Compiler;
 using System.Reflection;
 using Sage.SDataHandler.Compiler;
+using System.IO;
 
 namespace Sage.SDataHandler
 {
     public class DependencyManager
     {
-        static Assembly assembly;
 
         static List<string> DefaultAssemblies = new List<string>{
                                         "Sage.SDataHandler.dll",
@@ -22,45 +21,252 @@ namespace Sage.SDataHandler
                                         "Microsoft.Practices.Unity.dll"
                                         };
 
+        public const string GEN_DLL_NAME = "GenController.dll";
 
-        public static void RegisterDependencyResolver(HttpConfiguration httpConfig,
+        string pathToAssemblies; //@"C:\pvxtst\billable"; //
+
+        static DependencyManager single;
+
+        static public DependencyManager getInstance()
+        {
+            if (single == null)
+            {
+                single = new DependencyManager();
+            }
+
+            return single;
+        }
+
+        private DependencyManager()
+        {
+            pathToAssemblies = HttpContext.Current.Server.MapPath("~/bin");
+        }
+
+        // just builds simple controllers
+        public void BuildDefaultControllers()
+        {
+            string[] files = Directory.GetFileSystemEntries(pathToAssemblies, "*.dll");
+            BuildDefaultControllers(files);
+        }
+
+        // just builds simple controllers
+        public void BuildDefaultControllers(string[] assembliesToSearch)
+        {
+            Assembly assembly = GenerateSourceAndCompile(false, assembliesToSearch);
+        }
+
+        // Builds controllers and handles Dependency injection with unity and IOC
+        public void RegisterDependencyResolver(HttpConfiguration httpConfig)
+        {
+            string[] files = Directory.GetFileSystemEntries(pathToAssemblies, "*.dll");
+            RegisterDependencyResolver(httpConfig, files);
+        }
+
+        // Builds controllers and handles Dependency injection with unity and IOC
+        public void RegisterDependencyResolver(HttpConfiguration httpConfig, string[] assembliesToSearch)
+        {
+            Assembly assembly = GenerateSourceAndCompile(true, assembliesToSearch);
+            if (assembly != null)
+            {
+                // now register dependencies
+                DoRegisterDependencies(httpConfig, assembly);
+            }
+        }
+
+        private Assembly GenerateSourceAndCompile(bool generateWithDependencyResolver, string[] files)
+        {
+            Assembly assembly = GetPreviousBuild();
+            if (assembly != null)
+            {
+                return assembly;
+            }
+
+            List<string> requiredAssemblies = new List<string>();
+            Dictionary<string, string> modelClassNameMap = new Dictionary<string, string>();
+
+            List<Type> discoveredControllers = new List<Type>();
+
+            string fullNameOfRepo = null;
+
+            foreach (string file in files)
+            {
+                Assembly asm = Assembly.LoadFile(file);
+
+                Type[] types = asm.GetTypes();
+
+                foreach (Type type in types)
+                {
+                    bool asmRequired = false;
+
+                    if (type.BaseType == typeof(MobileModelEntity))
+                    {
+                        // found model calss
+                        modelClassNameMap.Add(type.Name, type.FullName);
+
+                        asmRequired = true;
+                    }
+                    else if (type.BaseType == typeof(ApiController))
+                    {
+                        // found a controller
+                        discoveredControllers.Add(type);
+                    }
+                    else if (fullNameOfRepo == null)
+                    {
+                        if (type.GetInterface(typeof(IRepository<>).Name) != null)
+                        {
+                            fullNameOfRepo = type.FullName;
+
+                            if (type.IsGenericType)
+                                fullNameOfRepo = fullNameOfRepo.Remove(fullNameOfRepo.IndexOf('`'));
+
+                            asmRequired = true;
+                        }
+                    }
+
+                    if (asmRequired && !requiredAssemblies.Contains(file))
+                    {
+                        requiredAssemblies.Add(file);
+                    }
+                } // eo for each type in assembly
+
+            } // eo for each assembly in directory
+
+            if (fullNameOfRepo != null)
+            {
+                foreach(Type controller in discoveredControllers)
+                {
+                    if(controller.IsGenericType)
+                    {
+                        // get the model entity by type
+                        Type type = controller.GetGenericArguments()[0];
+                    }
+                    else
+                    {
+                        // try to derive model type by MVC controller nameing convention
+                        string cntrlName = controller.Name;
+                        int ndx = cntrlName.ToLower().IndexOf("controller");
+                        string modelName;
+                        if( ndx > 0)
+                        {
+                            modelName = cntrlName.Remove(ndx);
+                        }
+                        else
+                        {
+                            modelName = cntrlName;
+                        }
+
+                        if (modelClassNameMap.ContainsKey(modelName))
+                        {
+                            modelClassNameMap.Remove(modelName);
+                        }
+                    }
+                }
+
+                string[] modelClasses = modelClassNameMap.Values.ToArray<string>();
+
+                string source;
+                if (generateWithDependencyResolver)
+                {
+                    ControllerTemplate2 prtt = new ControllerTemplate2(modelClasses, fullNameOfRepo);
+                    source = prtt.TransformText();
+                }
+                else
+                {
+                    ControllerTemplate3 prtt = new ControllerTemplate3(modelClasses, fullNameOfRepo);
+                    source = prtt.TransformText();
+                }
+
+                string pathToServerBin = HttpContext.Current.Server.MapPath("~/bin");
+                return DoCompile(requiredAssemblies, pathToServerBin, source);
+            }
+
+            return null;
+        }
+
+        public void RegisterDependencyResolver(HttpConfiguration httpConfig,
                                                         string modelLocation,
                                                         string modelNameSpace,
                                                         string repositoryNameSpace,
                                                         List<string> requiredAssemblies,
                                                         string pathToAssemblies)
         {
-            UnityContainer unity = new UnityContainer();
-
             ControllerTemplate1 prtt = new ControllerTemplate1(modelLocation, modelNameSpace, repositoryNameSpace);
-
             string txt = prtt.TransformText();
 
-            CSTextCompiler comp = new CSTextCompiler();
+            Assembly assembly = DoCompile(requiredAssemblies, pathToAssemblies, txt);
 
-            // path to where SDataHandler dll and BillableModel.dll are
-            string outputAssemblyPath = pathToAssemblies; // @"C:\pvxtst\billable";
-            string outputAssemblyName = "GenController.dll";
-
-            string asSourceStr = txt;
-
-            List<string> allAssembs = new List<string>();
-            allAssembs.AddRange(DefaultAssemblies);
-            allAssembs.AddRange(requiredAssemblies);
-
-            string[] listOfReferencedAssemblies = allAssembs.ToArray<string>();
-
-            assembly = comp.Compile(pathToAssemblies, outputAssemblyName, outputAssemblyPath, listOfReferencedAssemblies, asSourceStr);
-
-            IDependencyUtil anobj = (IDependencyUtil)assembly.CreateInstance("Sage.SData.Compiler.DependencyUtil");
-
-            anobj.RegisterDependencyResolver(httpConfig);
-
+            // now register dependencies
+            DoRegisterDependencies(httpConfig, assembly);
         }
 
-        public static Type[] GetControllerType()
+        private void DoRegisterDependencies(HttpConfiguration httpConfig, Assembly assembly)
         {
-            return assembly.GetTypes();
+            IDependencyUtil anobj = (IDependencyUtil)assembly.CreateInstance("Sage.SData.Compiler.DependencyUtil");
+            UnityContainer unity = anobj.RegisterDependencyResolver(httpConfig);
+            httpConfig.DependencyResolver = new IoCContainer(unity);
+        }
+
+        private Assembly DoCompile(List<string> requiredAssemblies, string pathToAssemblies, string asSourceStr)
+        {
+            // path to where SDataHandler dll and BillableModel.dll arez
+            Assembly assembly = GetPreviousBuild();
+
+            if (assembly == null)
+            {
+                CSTextCompiler comp = new CSTextCompiler();
+
+                List<string> allAssembs = new List<string>();
+                allAssembs.AddRange(DefaultAssemblies);
+                allAssembs.AddRange(requiredAssemblies);
+
+                string[] listOfReferencedAssemblies = allAssembs.ToArray<string>();
+
+                assembly = comp.Compile(pathToAssemblies, GEN_DLL_NAME, pathToAssemblies, listOfReferencedAssemblies, asSourceStr);
+            }
+
+            return assembly;
+        }
+
+        private Assembly GetPreviousBuild()
+        {
+            Assembly assembly = null;
+            string genCodeAssembly = pathToAssemblies + "\\" + GEN_DLL_NAME;
+            if (File.Exists(genCodeAssembly))
+            {
+                if (IsFileLocked(genCodeAssembly))
+                {
+                    assembly = Assembly.LoadFile(genCodeAssembly);
+                }
+            }
+            return assembly;
+        }
+
+
+        bool IsFileLocked(string filePath)
+        {
+            FileInfo file = new FileInfo(filePath);
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
         }
     }
 
