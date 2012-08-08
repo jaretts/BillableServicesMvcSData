@@ -105,7 +105,7 @@ namespace Sage.SDataHandler
 
                         asmRequired = true;
                     }
-                    else if (type.BaseType == typeof(ApiController))
+                    else if (IsApiControllerType(type))
                     {
                         // found a controller
                         discoveredControllers.Add(type);
@@ -183,6 +183,25 @@ namespace Sage.SDataHandler
             return null;
         }
 
+        public bool IsApiControllerType(Type type)
+        {
+            if(type != null)
+            {
+                Type baseType = type.BaseType;
+                while (baseType != null)
+                {
+                    if (baseType == typeof(ApiController))
+                    {
+                        return true;
+                    }
+
+                    baseType = baseType.BaseType;
+                }
+            }
+
+            return false;
+        }
+
         public void RegisterDependencyResolver(HttpConfiguration httpConfig,
                                                         string modelLocation,
                                                         string modelNameSpace,
@@ -233,10 +252,8 @@ namespace Sage.SDataHandler
             string genCodeAssembly = pathToAssemblies + "\\" + GEN_DLL_NAME;
             if (File.Exists(genCodeAssembly))
             {
-                if (IsFileLocked(genCodeAssembly))
-                {
+                //if (IsFileLocked(genCodeAssembly))
                     assembly = Assembly.LoadFile(genCodeAssembly);
-                }
             }
             return assembly;
         }
