@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using Microsoft.Practices.Unity;
 using Sage.SData.Repository;
 using Sage.SData.Compiler;
 using System.Reflection;
@@ -17,8 +16,8 @@ namespace Sage.SDataHandler
 
         static List<string> DefaultAssemblies = new List<string>{
                                         "Sage.SDataHandler.dll",
-                                        "System.Web.Http.dll",
-                                        "Microsoft.Practices.Unity.dll"
+                                        "System.Web.Http.dll"
+                                        //, "Microsoft.Practices.Unity.dll"
                                         };
 
         public const string GEN_DLL_NAME = "GenController.dll";
@@ -84,7 +83,7 @@ namespace Sage.SDataHandler
                 {
                     bool asmRequired = false;
 
-                    if (type.BaseType == typeof(MobileModelEntity))
+                    if (type.BaseType == typeof(SDataModelEntity))
                     {
                         // found model calss
                         modelClassNameMap.Add(type.Name, type.FullName);
@@ -178,9 +177,11 @@ namespace Sage.SDataHandler
 
         static private void DoRegisterDependencies(HttpConfiguration httpConfig, Assembly assembly)
         {
+            /*
             IDependencyUtil anobj = (IDependencyUtil)assembly.CreateInstance("Sage.SData.Compiler.DependencyUtil");
             UnityContainer unity = anobj.RegisterDependencyResolver(httpConfig);
             httpConfig.DependencyResolver = new IoCContainer(unity);
+             */
         }
 
         static private Assembly DoCompile(List<string> requiredAssemblies, string pathToAssemblies, string asSourceStr)

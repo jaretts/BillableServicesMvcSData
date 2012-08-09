@@ -14,7 +14,7 @@ using Sage.SData.Repository;
 namespace BillableModel.Models
 {
     [DataContract]
-    public partial class ServiceCharge : MobileModelEntity
+    public partial class ServiceCharge : SDataModelEntity
     {
         public ServiceCharge()
         {

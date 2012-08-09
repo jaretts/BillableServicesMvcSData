@@ -14,7 +14,7 @@ using Sage.SData.Repository;
 namespace BillableModel.Models
 {
     [DataContract]
-    public partial class BillingSchedule : MobileModelEntity
+    public partial class BillingSchedule : SDataModelEntity
     {
     	[DataMember]
         public int BillingScheduleID { get; set; }

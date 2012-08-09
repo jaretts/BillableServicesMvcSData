@@ -33,6 +33,8 @@ namespace BillableServicesMvcSData
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            // These 3 lines add SData Support
+            SDataRoutesUtil.RegisterSDataRoutes("sdata/billserv/billserv/-", RouteTable.Routes);
             DependencyManager.BuildDefaultControllers();
             GlobalConfiguration.Configuration.MessageHandlers.Add(new SDataHandler());
 

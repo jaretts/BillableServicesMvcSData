@@ -10,7 +10,7 @@ using Sage.SDataHandler;
 
 namespace Sage.SData.Controllers
 {
-    public class DefaultController<T> : ApiController where T : MobileModelEntity // class
+    public class DefaultController<T> : ApiController where T : SDataModelEntity // class
     {
         public IRepository<T> respository { get; set; }
 

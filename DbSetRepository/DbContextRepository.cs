@@ -10,7 +10,7 @@ using BillableModel.Models;
 
 namespace DbSetRepository
 {
-    public class DbContextRepository<T> : IRepository<T> where T : MobileModelEntity
+    public class DbContextRepository<T> : IRepository<T> where T : SDataModelEntity
     {
         DbContext db;
 

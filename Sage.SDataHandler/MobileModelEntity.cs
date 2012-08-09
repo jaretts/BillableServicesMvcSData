@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Sage.SData.Repository
 {
     [DataContract]
-    public abstract class  MobileModelEntity
+    public abstract class  SDataModelEntity
     {
         [DataMember(Name = "$url")]
         public String relativeUrl

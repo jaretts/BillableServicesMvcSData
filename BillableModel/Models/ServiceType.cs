@@ -14,7 +14,7 @@ using Sage.SData.Repository;
 namespace BillableModel.Models
 {
     [DataContract]
-    public partial class ServiceType : MobileModelEntity
+    public partial class ServiceType : SDataModelEntity
     {
     	[DataMember]
         public int ServiceTypeID { get; set; }

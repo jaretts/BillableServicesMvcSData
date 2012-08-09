@@ -1,0 +1,18 @@
+﻿
+1. At line 34 Change line and add [DataContract] and make class extend SDataModelEntity if it does not extend another class E.G:
+
+The original line will be something like:
+
+<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#>partial class <#=code.Escape(entity)#><#=code.StringBefore(" : ", code.Escape(entity.BaseType))#>
+
+Change it to two lines:
+
+[DataContract]
+<#=Accessibility.ForType(entity)#> <#=code.SpaceAfter(code.AbstractOption(entity))#>partial class <#=code.Escape(entity)#><#=code.StringBefore(" : ", string.IsNullOrEmpty(code.Escape(entity.BaseType)) ? "SDataModelEntity" : code.Escape(entity.BaseType))#>
+
+2. At line #195 add two using to the using block (there should be two "using System: around there); add the following at line 197:
+
+using System.Runtime.Serialization;
+using Sage.SData.Repository;
+
+3. At line 251 add: [DataMember]
