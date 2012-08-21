@@ -25,9 +25,9 @@ namespace Sage.SData.Controllers
         [Queryable]
         [HttpGet]
         [ActionName(SDataRoutesUtil.SDATA_ACTION_COLLECTION)]
-        public virtual IQueryable<T> GetCollection(string select)
+        public virtual IQueryable<T> GetCollection(string select, string include)
         {
-            IQueryable<T> retVal = respository.GetAll(select);
+            IQueryable<T> retVal = respository.GetAll(select, include);
 
             if (retVal == null)
             {
@@ -46,17 +46,9 @@ namespace Sage.SData.Controllers
         // GET api/product/5
         [HttpGet]
         [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)]
-        public virtual T GetSingle(int selector)
+        public virtual T GetSingle(int selector, String select, string include)
         {
-            return respository.GetSingle(selector, null);
-        }
-
-        // GET api/product/5
-        [HttpGet]
-        [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)]
-        public virtual T GetSingle(int selector, String select)
-        {
-            return respository.GetSingle(selector, select);
+            return respository.GetSingle(selector, select, include);
         }
 
         [HttpGet]
@@ -74,7 +66,7 @@ namespace Sage.SData.Controllers
             T resourceModified = null;
 
             // check if it exists
-            T oldValue = GetSingle(selector, select);
+            T oldValue = GetSingle(selector, select, null);
 
             if ( oldValue != null)
             {
@@ -84,7 +76,7 @@ namespace Sage.SData.Controllers
                     respository.Update(oldValue, value);
 
                     // get new value
-                    resourceModified = GetSingle(selector, select);
+                    resourceModified = GetSingle(selector, select, null);
                 }
                 catch (Exception e)
                 {
@@ -132,7 +124,7 @@ namespace Sage.SData.Controllers
         public HttpResponseMessage Delete(int selector)
         {
             HttpResponseMessage retValue;
-            T oldValue = GetSingle(selector, null);
+            T oldValue = GetSingle(selector, null, null);
 
 
             if (oldValue == null)

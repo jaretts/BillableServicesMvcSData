@@ -7,9 +7,9 @@ namespace Sage.SData.Repository
 {
     public interface IRepository<T> where T : SDataModelEntity // class
     {
-        T GetSingle(int selector, String select);
+        T GetSingle(int selector, String select, string include);
 
-        IQueryable<T> GetAll(string select);
+        IQueryable<T> GetAll(string select, string include);
 
         T GetTemplate();
 

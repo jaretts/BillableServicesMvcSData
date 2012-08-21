@@ -17,20 +17,56 @@ namespace DbSetRepository
         public DbContextRepository()
         {
             db = new BillableServicesEntities();
+            db.Configuration.ProxyCreationEnabled = false;
+            //db.Configuration.LazyLoadingEnabled = false;
+
         }
 
-        public virtual T GetSingle(int selector, String select)
+        public virtual T GetSingle(int selector, string select, string include)
         {
-            return GetAll(select).FirstOrDefault(y => y.ID == selector);
+            return GetAll(select, include).FirstOrDefault(y => y.ID == selector);
         }
 
-        public IQueryable<T> GetAll(string select)
+        public IQueryable<T> GetAll(string select, string include)
         {
-            //db.Configuration.ProxyCreationEnabled = false;
 
             DbSet<T> set = db.Set<T>();
             IQueryable<T> retVal;
 
+            retVal = HandleSelect(select, set);
+
+            retVal = HandleInclude(include, retVal);
+
+            return retVal;
+
+        }
+
+        private static IQueryable<T> HandleInclude(string include, IQueryable<T> retVal)
+        {
+            if (!string.IsNullOrEmpty(include))
+            {
+                include = include.Trim();
+                if (include.StartsWith("'"))
+                {
+                    include = include.Remove(0, 1);
+                }
+                if (include.EndsWith("'"))
+                {
+                    include = include.Remove(include.Length - 1, 1);
+                }
+
+                if (!string.IsNullOrEmpty(include))
+                {
+                    retVal = retVal.Include(include);
+                }
+            }
+
+            return retVal;
+        }
+
+        private static IQueryable<T> HandleSelect(string select, DbSet<T> set)
+        {
+            IQueryable<T> retVal;
             if (string.IsNullOrEmpty(select))
             {
                 retVal = set.AsQueryable<T>();
@@ -61,7 +97,6 @@ namespace DbSetRepository
             }
 
             return retVal;
-
         }
 
         public T GetTemplate()

@@ -95,7 +95,9 @@ namespace Sage.SDataHandler
                     translatedKey = SDataUriKeys.ODATA_ORDERBY;
                     break;
                 case SDataUriKeys.SDATA_INCLUDE:
-                    translatedKey = SDataUriKeys.ODATA_INCLUDE;
+                    // odata include ($expand) not working so map back to include and handle in repository or controllers
+                    //translatedKey = SDataUriKeys.ODATA_INCLUDE;
+                    translatedKey = SDataUriKeys.SDATA_INCLUDE;
                     break;
                 case SDataUriKeys.SDATA_SELECT:
                     translatedKey = SDataUriKeys.ODATA_SELECT;
