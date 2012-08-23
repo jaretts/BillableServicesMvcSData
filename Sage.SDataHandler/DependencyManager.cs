@@ -6,7 +6,6 @@ using System.Web.Http;
 using Sage.SData.Repository;
 using Sage.SData.Compiler;
 using System.Reflection;
-using Sage.SDataHandler.Compiler;
 using System.IO;
 
 namespace Sage.SDataHandler
@@ -23,9 +22,6 @@ namespace Sage.SDataHandler
         public const string GEN_DLL_NAME = "GenController.dll";
 
         static string pathToAssemblies = HttpContext.Current.Server.MapPath("~/bin");
-
-        static DependencyManager single;
-
 
         // just builds simple controllers
         static public void BuildDefaultControllers()

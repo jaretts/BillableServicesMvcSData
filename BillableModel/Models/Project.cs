@@ -16,6 +16,11 @@ namespace BillableModel.Models
     [DataContract]
     public partial class Project : SDataModelEntity
     {
+        public Project()
+        {
+            this.ServiceCharges = new HashSet<ServiceCharge>();
+        }
+    
     	[DataMember]
         public int ProjectID { get; set; }
     	[DataMember]
@@ -28,6 +33,8 @@ namespace BillableModel.Models
         public double Budget { get; set; }
     	[DataMember]
         public double BilledAmt { get; set; }
+    
+        public virtual ICollection<ServiceCharge> ServiceCharges { get; set; }
     }
     
 }

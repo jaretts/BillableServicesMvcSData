@@ -40,6 +40,8 @@ namespace BillableModel.Models
     
     	[DataMember]
         public virtual ICollection<ServiceDetail> ServiceDetails { get; set; }
+    	[DataMember]
+        public virtual Project Project { get; set; }
     }
     
 }

@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using System.Reflection;
 using System.Data.Entity.Infrastructure;
+using System.Data.Metadata.Edm;
 using Sage.SData.Repository;
 using BillableModel.Models;
+using System.Data.Objects;
 
 namespace DbSetRepository
 {
@@ -14,12 +15,15 @@ namespace DbSetRepository
     {
         DbContext db;
 
-        public DbContextRepository()
+        public DbContextRepository() : this(new BillableServicesEntities())
         {
-            db = new BillableServicesEntities();
+        }
+
+        public DbContextRepository(DbContext initdb)
+        {
+            db = initdb;
             db.Configuration.ProxyCreationEnabled = false;
             //db.Configuration.LazyLoadingEnabled = false;
-
         }
 
         public virtual T GetSingle(int selector, string select, string include)
@@ -41,7 +45,7 @@ namespace DbSetRepository
 
         }
 
-        private static IQueryable<T> HandleInclude(string include, IQueryable<T> retVal)
+        private IQueryable<T> HandleInclude(string include, IQueryable<T> retVal)
         {
             if (!string.IsNullOrEmpty(include))
             {
@@ -55,9 +59,58 @@ namespace DbSetRepository
                     include = include.Remove(include.Length - 1, 1);
                 }
 
+                if (include.Equals("$children"))
+                {
+                    // if $children then find all navigation properties and include all
+                    if (db is IObjectContextAdapter)
+                    {
+                        ObjectContext obc = ((IObjectContextAdapter)db).ObjectContext;
+
+                        EntityType entityType = GetCSpaceEntityType<T>(obc.MetadataWorkspace);
+
+                        if (entityType == null)
+                        {
+                            include = "";
+                        }
+                        else
+                        {
+                            // build an include string like 'OrderDetails,Address'
+                            var props = entityType.NavigationProperties;
+
+                            StringBuilder propsToInclude = new StringBuilder();
+                            foreach (NavigationProperty aProp in props)
+                            {
+                                if (propsToInclude.Length != 0)
+                                {
+                                    propsToInclude.Append(",");
+                                }
+                                propsToInclude.Append(aProp.Name);
+                            }
+
+                            include = propsToInclude.ToString();
+                        }
+                    }
+                }
+
+                // if there's an include then expand the navigation properties
                 if (!string.IsNullOrEmpty(include))
                 {
-                    retVal = retVal.Include(include);
+                    if (include.Contains(","))
+                    {
+                        // multiple includes
+                        string[] includes = include.Split(',');
+
+                        foreach (string anInclude in includes)
+                        {
+                            retVal = retVal.Include(anInclude);
+                        }
+
+                    }
+                    else
+                    {
+                        retVal = retVal.Include(include);
+                    }
+
                 }
             }
 
@@ -138,5 +191,29 @@ namespace DbSetRepository
             db.SaveChanges();
         }
 
+        public EntityType GetCSpaceEntityType<ET>(MetadataWorkspace workspace)
+        {
+            if (workspace == null)
+                throw new ArgumentNullException("workspace");
+            // Make sure the assembly for "T" is loaded 
+            workspace.LoadFromAssembly(typeof(ET).Assembly);
+            // Try to get the ospace type and if that is found 
+            // look for the cspace type too. 
+            EntityType ospaceEntityType = null;
+            StructuralType cspaceEntityType = null;
+            if (workspace.TryGetItem<EntityType>(
+                typeof(ET).FullName,
+                DataSpace.OSpace,
+                out ospaceEntityType))
+            {
+                if (workspace.TryGetEdmSpaceType(
+                    ospaceEntityType,
+                    out cspaceEntityType))
+                {
+                    return cspaceEntityType as EntityType;
+                }
+            }
+            return null;
+        }
     }
 }

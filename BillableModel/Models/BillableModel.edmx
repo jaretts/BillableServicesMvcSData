@@ -188,6 +188,14 @@
             <End Role="ServiceCharge" EntitySet="ServiceCharges" />
             <End Role="ServiceDetail" EntitySet="ServiceDetails" />
           </AssociationSet>
+          <AssociationSet Name="ServiceTypeServiceDetail" Association="BillableServicesModel.ServiceTypeServiceDetail">
+            <End Role="ServiceType" EntitySet="ServiceTypes" />
+            <End Role="ServiceDetail" EntitySet="ServiceDetails" />
+          </AssociationSet>
+          <AssociationSet Name="ProjectServiceCharge" Association="BillableServicesModel.ProjectServiceCharge">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="ServiceCharge" EntitySet="ServiceCharges" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="BillingSchedule">
           <Key>
@@ -237,6 +245,7 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="Budget" Type="Double" Nullable="false" />
           <Property Name="BilledAmt" Type="Double" Nullable="false" />
+          <NavigationProperty Name="ServiceCharges" Relationship="BillableServicesModel.ProjectServiceCharge" FromRole="Project" ToRole="ServiceCharge" />
         </EntityType>
         <EntityType Name="ServiceCharge">
           <Key>
@@ -251,6 +260,7 @@
           <Property Name="Recipient" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
           <Property Name="Note" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
           <NavigationProperty Name="ServiceDetails" Relationship="BillableServicesModel.ServiceChargeServiceDetail" FromRole="ServiceCharge" ToRole="ServiceDetail" />
+          <NavigationProperty Name="Project" Relationship="BillableServicesModel.ProjectServiceCharge" FromRole="ServiceCharge" ToRole="Project" />
         </EntityType>
         <EntityType Name="ServiceDetail">
           <Key>
@@ -263,6 +273,7 @@
           <Property Name="Rate" Type="Double" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="ServiceCharge" Relationship="BillableServicesModel.ServiceChargeServiceDetail" FromRole="ServiceDetail" ToRole="ServiceCharge" />
+          <NavigationProperty Name="ServiceType" Relationship="BillableServicesModel.ServiceTypeServiceDetail" FromRole="ServiceDetail" ToRole="ServiceType" />
         </EntityType>
         <EntityType Name="ServiceType">
           <Key>
@@ -274,6 +285,7 @@
           <Property Name="UOM" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
           <Property Name="Rate" Type="Double" Nullable="false" />
           <Property Name="Taxable" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="ServiceDetails" Relationship="BillableServicesModel.ServiceTypeServiceDetail" FromRole="ServiceType" ToRole="ServiceDetail" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -299,6 +311,30 @@
             </Principal>
             <Dependent Role="ServiceDetail">
               <PropertyRef Name="ServiceChargeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ServiceTypeServiceDetail">
+          <End Type="BillableServicesModel.ServiceType" Role="ServiceType" Multiplicity="1" />
+          <End Type="BillableServicesModel.ServiceDetail" Role="ServiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceType">
+              <PropertyRef Name="ServiceTypeID" />
+            </Principal>
+            <Dependent Role="ServiceDetail">
+              <PropertyRef Name="ServiceTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProjectServiceCharge">
+          <End Type="BillableServicesModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="BillableServicesModel.ServiceCharge" Role="ServiceCharge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="ServiceCharge">
+              <PropertyRef Name="ProjectID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -444,21 +480,29 @@
         <EntityTypeShape EntityType="BillableServicesModel.BillingSchedule" Width="1.5" PointX="0.75" PointY="0.75" Height="1.787985026041667" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Contact" Width="1.5" PointX="2.75" PointY="0.75" Height="2.7494921874999996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.Customer" Width="1.5" PointX="4.75" PointY="0.75" Height="2.9417936197916656" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.Project" Width="1.5" PointX="0.75" PointY="4.75" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillableServicesModel.Project" Width="1.5" PointX="6.5" PointY="5.375" Height="2.1725878906249996" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.ServiceCharge" PointX="3.875" PointY="5.25" Width="1.5" Height="2.7494921875000031" IsExpanded="true" />
         <EntityTypeShape EntityType="BillableServicesModel.ServiceDetail" Width="1.5" PointX="0.875" PointY="7.625" Height="2.1725878906249996" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.ServiceType" Width="1.5" PointX="6.375" PointY="8.625" Height="2.1725878906249996" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.User" Width="1.5" PointX="6.75" PointY="3.75" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="BillableServicesModel.ApprovedServiceCharge" Width="1.5" PointX="4.25" PointY="9.375" Height="1.2110807291666674" />
+        <EntityTypeShape EntityType="BillableServicesModel.ServiceType" Width="1.5" PointX="3.125" PointY="9.125" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillableServicesModel.User" Width="1.5" PointX="0.625" PointY="3.125" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillableServicesModel.ApprovedServiceCharge" Width="1.5" PointX="6.375" PointY="8.625" Height="1.2110807291666674" />
         <InheritanceConnector ManuallyRouted="false" EntityType="BillableServicesModel.ApprovedServiceCharge">
           <ConnectorPoint PointX="4.625" PointY="7.9994921875000031" />
-          <ConnectorPoint PointX="4.625" PointY="9" />
-          <ConnectorPoint PointX="5" PointY="9" />
-          <ConnectorPoint PointX="5" PointY="9.375" />
+          <ConnectorPoint PointX="4.625" PointY="8.25" />
+          <ConnectorPoint PointX="7.125" PointY="8.25" />
+          <ConnectorPoint PointX="7.125" PointY="8.625" />
         </InheritanceConnector>
         <AssociationConnector Association="BillableServicesModel.ServiceChargeServiceDetail">
           <ConnectorPoint PointX="3.875" PointY="7.8122460937500007" />
           <ConnectorPoint PointX="2.375" PointY="7.8122460937500007" />
+        </AssociationConnector>
+        <AssociationConnector Association="BillableServicesModel.ServiceTypeServiceDetail">
+          <ConnectorPoint PointX="3.125" PointY="9.6535953776041659" />
+          <ConnectorPoint PointX="2.375" PointY="9.6535953776041659" />
+        </AssociationConnector>
+        <AssociationConnector Association="BillableServicesModel.ProjectServiceCharge">
+          <ConnectorPoint PointX="6.5" PointY="6.5574446614583337" />
+          <ConnectorPoint PointX="5.375" PointY="6.5574446614583337" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>

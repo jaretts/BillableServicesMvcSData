@@ -16,6 +16,11 @@ namespace BillableModel.Models
     [DataContract]
     public partial class ServiceType : SDataModelEntity
     {
+        public ServiceType()
+        {
+            this.ServiceDetails = new HashSet<ServiceDetail>();
+        }
+    
     	[DataMember]
         public int ServiceTypeID { get; set; }
     	[DataMember]
@@ -28,6 +33,9 @@ namespace BillableModel.Models
         public double Rate { get; set; }
     	[DataMember]
         public string Taxable { get; set; }
+    
+    	[DataMember]
+        public virtual ICollection<ServiceDetail> ServiceDetails { get; set; }
     }
     
 }
