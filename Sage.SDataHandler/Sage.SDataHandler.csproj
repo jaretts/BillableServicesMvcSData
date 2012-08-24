@@ -55,7 +55,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="DependencyManager.cs" />
     <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="MobileModelEntity.cs" />
+    <Compile Include="SDataModelEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SDataCollectionMetadata.cs" />
     <Compile Include="SDataHandler.cs" />

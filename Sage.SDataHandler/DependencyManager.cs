@@ -14,7 +14,7 @@ namespace Sage.SDataHandler
     {
 
         static List<string> DefaultAssemblies = new List<string>{
-                                        "Sage.SDataHandler.dll",
+                                        //"Sage.SDataHandler.dll",
                                         "System.Web.Http.dll"
                                         //, "Microsoft.Practices.Unity.dll"
                                         };
@@ -63,6 +63,8 @@ namespace Sage.SDataHandler
             }
 
             List<string> requiredAssemblies = new List<string>();
+            AddRequiredAssembly(typeof(SDataHandler).Assembly, requiredAssemblies);
+
             Dictionary<string, string> modelClassNameMap = new Dictionary<string, string>();
 
             List<string> discoveredControllers = new List<string>();
@@ -71,7 +73,11 @@ namespace Sage.SDataHandler
 
             foreach (string file in files)
             {
-                Assembly asm = Assembly.LoadFile(file);
+                string validFilePath = ValidateAssemblyFilePath(file);
+                if (String.IsNullOrEmpty(validFilePath))
+                    continue;
+
+                Assembly asm = Assembly.LoadFile(validFilePath);
 
                 Type[] types = asm.GetTypes();
 
@@ -79,14 +85,16 @@ namespace Sage.SDataHandler
                 {
                     bool asmRequired = false;
 
-                    if (type.BaseType == typeof(SDataModelEntity))
+                    //if (type.BaseType == typeof(SDataModelEntity))
+                    if (IsParentTypeMatch(type, typeof(SDataModelEntity)))
                     {
                         // found model calss
                         modelClassNameMap.Add(type.Name, type.FullName);
 
                         asmRequired = true;
                     }
-                    else if (IsApiControllerType(type))
+                    //else if (IsApiControllerType(type))
+                    else if (IsParentTypeMatch(type, typeof(ApiController)))
                     {
                         // found a controller
                         discoveredControllers.Add(type.Name);
@@ -95,18 +103,34 @@ namespace Sage.SDataHandler
                     {
                         if (type.GetInterface(typeof(IRepository<>).Name) != null)
                         {
-                            fullNameOfRepo = type.FullName;
+                            // check if this type can be instantiated; it might be 
+                            // an abstract class like the DefaultDbRepository class
+                            // If the type is abstract need to keep searching for repository
+                            if(!type.IsAbstract)
+                            {
+                                fullNameOfRepo = type.FullName;
 
-                            if (type.IsGenericType)
-                                fullNameOfRepo = fullNameOfRepo.Remove(fullNameOfRepo.IndexOf('`'));
+                                if (type.IsGenericType)
+                                    fullNameOfRepo = fullNameOfRepo.Remove(fullNameOfRepo.IndexOf('`'));
+                            }
 
                             asmRequired = true;
+
                         }
                     }
 
-                    if (asmRequired && !requiredAssemblies.Contains(file))
+                    if ( asmRequired )
                     {
-                        requiredAssemblies.Add(file);
+                        if (!requiredAssemblies.Contains(file))
+                        {
+                            requiredAssemblies.Add(file);
+                        }
+
+                        // added the assembly this type is declared in, now check 
+                        // for base types this type is derived from and if they're in
+                        // different asseblies add those assemblies too
+                        AddParentTypeAssemblies(type, requiredAssemblies);
+
                     }
                 } // eo for each type in assembly
 
@@ -136,14 +160,61 @@ namespace Sage.SDataHandler
             return null;
         }
 
-        static public bool IsApiControllerType(Type type)
+        private static string ValidateAssemblyFilePath(string file)
         {
-            if(type != null)
+            string validFilePath = null;
+            if (File.Exists(file))
+            {
+                validFilePath = file;
+            }
+            else
+            {
+                // try to find file in the server's bin
+                if (!file.Contains(pathToAssemblies))
+                {
+                    string serverBinFilePath = pathToAssemblies + "\\" + file;
+
+                    if (File.Exists(serverBinFilePath))
+                    {
+                        validFilePath = serverBinFilePath;
+                    }
+                }
+            }
+            return validFilePath;
+        }
+
+        static public void AddParentTypeAssemblies(Type type, List<string> requiredAssemblies)
+        {
+            if (type != null)
             {
                 Type baseType = type.BaseType;
                 while (baseType != null)
                 {
-                    if (baseType == typeof(ApiController))
+                    AddRequiredAssembly(baseType.Assembly, requiredAssemblies);
+                    baseType = baseType.BaseType;
+                }
+            }
+        }
+
+        public static void AddRequiredAssembly(Assembly asm, List<string> requiredAssemblies)
+        {
+            string assemblyLoc = asm.Location;
+            //string assemblyLoc = baseType.Assembly.GetName().Name;
+            //string assemblyLoc = baseType.Assembly.FullName;
+            if (!requiredAssemblies.Contains(assemblyLoc))
+            {
+                requiredAssemblies.Add(assemblyLoc);
+            }
+        }
+
+        static public bool IsParentTypeMatch(Type type, Type searchType)
+        {
+            if (type != null)
+            {
+                Type baseType = type.BaseType;
+                while (baseType != null)
+                {
+                    if (baseType == searchType)
                     {
                         return true;
                     }

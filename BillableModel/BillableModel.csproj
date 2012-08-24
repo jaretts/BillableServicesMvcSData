@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BillableServiceRepository.cs" />
     <Compile Include="Models\ApprovedServiceCharge.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -109,6 +110,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DbSetRepository\DbSetRepository.csproj">
+      <Project>{719FBAA6-FBE5-4C99-93AA-9E97BBF8FD39}</Project>
+      <Name>DbSetRepository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sage.SDataHandler\Sage.SDataHandler.csproj">
       <Project>{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}</Project>
       <Name>Sage.SDataHandler</Name>

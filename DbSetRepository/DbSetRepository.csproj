@@ -31,11 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
+      <HintPath>..\..\ConsoleApplication2\ConsoleApplication2\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <ItemGroup>
@@ -43,14 +44,14 @@
     <Compile Include="DbContextRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BillableModel\BillableModel.csproj">
-      <Project>{6343CF16-E645-4FC5-A4B0-7E2C40EFE158}</Project>
-      <Name>BillableModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sage.SDataHandler\Sage.SDataHandler.csproj">
       <Project>{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}</Project>
       <Name>Sage.SDataHandler</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

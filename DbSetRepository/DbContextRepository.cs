@@ -6,23 +6,18 @@ using System.Reflection;
 using System.Data.Entity.Infrastructure;
 using System.Data.Metadata.Edm;
 using Sage.SData.Repository;
-using BillableModel.Models;
 using System.Data.Objects;
 
 namespace DbSetRepository
 {
-    public class DbContextRepository<T> : IRepository<T> where T : SDataModelEntity
+    abstract public class DbContextRepository<T> : IRepository<T> where T : SDataModelEntity
     {
-        DbContext db;
 
-        public DbContextRepository() : this(new BillableServicesEntities())
-        {
-        }
+        public abstract DbContext GetDatabaseContext();
 
-        public DbContextRepository(DbContext initdb)
+        public DbContextRepository()
         {
-            db = initdb;
-            db.Configuration.ProxyCreationEnabled = false;
+            GetDatabaseContext().Configuration.ProxyCreationEnabled = false;
             //db.Configuration.LazyLoadingEnabled = false;
         }
 
@@ -34,7 +29,7 @@ namespace DbSetRepository
         public IQueryable<T> GetAll(string select, string include)
         {
 
-            DbSet<T> set = db.Set<T>();
+            DbSet<T> set = GetDatabaseContext().Set<T>();
             IQueryable<T> retVal;
 
             retVal = HandleSelect(select, set);
@@ -43,6 +38,64 @@ namespace DbSetRepository
 
             return retVal;
 
+        }
+
+        public T GetTemplate()
+        {
+            T retValue;
+            try
+            {
+                retValue = (T)typeof(T).GetConstructor(new Type[] { }).Invoke(new object[] { });
+                retValue.InitializeDefaults();
+            }
+            catch
+            {
+                retValue = default(T);
+            }
+            return retValue;
+        }
+
+        public T Insert(T value)
+        {
+            GetDatabaseContext().Set<T>().Add(value);
+            GetDatabaseContext().SaveChanges();
+
+            return value;
+        }
+
+        public void Update(T oldValue, T newValue)
+        {
+            DbEntityEntry anEntry = GetDatabaseContext().Entry<T>(oldValue);
+
+            anEntry.CurrentValues.SetValues(newValue);
+            GetDatabaseContext().SaveChanges();
+
+        }
+
+        public void Delete(T entityToRemove)
+        {
+            GetDatabaseContext().Set<T>().Remove(entityToRemove); // Remove existing entity
+            GetDatabaseContext().SaveChanges();
+        }
+
+        public EntityType GetCSpaceEntityType<ET>(MetadataWorkspace workspace)
+        {
+            if (workspace == null)
+                throw new ArgumentNullException("workspace");
+            // Make sure the assembly for "T" is loaded 
+            workspace.LoadFromAssembly(typeof(ET).Assembly);
+            // Try to get the ospace type and if that is found 
+            // look for the cspace type too. 
+            EntityType ospaceEntityType = null;
+            StructuralType cspaceEntityType = null;
+            if (workspace.TryGetItem<EntityType>( typeof(ET).FullName, DataSpace.OSpace, out ospaceEntityType))
+            {
+                if (workspace.TryGetEdmSpaceType( ospaceEntityType, out cspaceEntityType))
+                {
+                    return cspaceEntityType as EntityType;
+                }
+            }
+            return null;
         }
 
         private IQueryable<T> HandleInclude(string include, IQueryable<T> retVal)
@@ -62,9 +115,9 @@ namespace DbSetRepository
                 if (include.Equals("$children"))
                 {
                     // if $children then find all navigation properties and include all
-                    if (db is IObjectContextAdapter)
+                    if (GetDatabaseContext() is IObjectContextAdapter)
                     {
-                        ObjectContext obc = ((IObjectContextAdapter)db).ObjectContext;
+                        ObjectContext obc = ((IObjectContextAdapter)GetDatabaseContext()).ObjectContext;
 
                         EntityType entityType = GetCSpaceEntityType<T>(obc.MetadataWorkspace);
 
@@ -152,68 +205,5 @@ namespace DbSetRepository
             return retVal;
         }
 
-        public T GetTemplate()
-        {
-            T retValue;
-            try
-            {
-                retValue = (T)typeof(T).GetConstructor(new Type[] { }).Invoke(new object[] { });
-                retValue.InitializeDefaults();
-            }
-            catch
-            {
-                retValue = default(T);
-            }
-            return retValue;
-        }
-
-        public T Insert(T value)
-        {
-            db.Set<T>().Add(value);
-
-            db.SaveChanges();
-
-            return value;
-        }
-
-        public void Update(T oldValue, T newValue)
-        {
-            DbEntityEntry anEntry = db.Entry<T>(oldValue);
-
-            anEntry.CurrentValues.SetValues(newValue);
-            db.SaveChanges();
-
-        }
-
-        public void Delete(T entityToRemove)
-        {
-            db.Set<T>().Remove(entityToRemove); // Remove existing entity
-            db.SaveChanges();
-        }
-
-        public EntityType GetCSpaceEntityType<ET>(MetadataWorkspace workspace)
-        {
-            if (workspace == null)
-                throw new ArgumentNullException("workspace");
-            // Make sure the assembly for "T" is loaded 
-            workspace.LoadFromAssembly(typeof(ET).Assembly);
-            // Try to get the ospace type and if that is found 
-            // look for the cspace type too. 
-            EntityType ospaceEntityType = null;
-            StructuralType cspaceEntityType = null;
-            if (workspace.TryGetItem<EntityType>(
-                typeof(ET).FullName,
-                DataSpace.OSpace,
-                out ospaceEntityType))
-            {
-                if (workspace.TryGetEdmSpaceType(
-                    ospaceEntityType,
-                    out cspaceEntityType))
-                {
-                    return cspaceEntityType as EntityType;
-                }
-            }
-            return null;
-        }
     }
 }

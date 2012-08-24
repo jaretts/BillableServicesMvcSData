@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Sage.SDataHandler;
-using Microsoft.Practices.Unity;
-using BillableServicesMvcSData.Controllers;
-using Sage.SData.Repository;
-using BillableModel.Models;
-using DbSetRepository;
-using Sage.SData.Compiler;
-using System.IO;
-using System.Reflection;
-using Sage.SDataHandler.Compiler;
 
 namespace BillableServicesMvcSData
 {
@@ -33,9 +20,17 @@ namespace BillableServicesMvcSData
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // These 3 lines add SData Support
+            // These 3 lines add SData Support:
+
+            // 1. Register SData Routes
             SDataRoutesUtil.RegisterSDataRoutes("sdata/billserv/billserv/-", RouteTable.Routes);
+
+            // 2. Call BuildDefaultController with no arguments and DependencyManager will search 
+            // the server's bin directory for Repository (implements) IRepository & Model (extends) SDataModelEntity
+            // Make sure required DLLs are in bin directory; E.G. BillableModel
             DependencyManager.BuildDefaultControllers();
+
+            // 3. Add SData JSON and URL handling support
             GlobalConfiguration.Configuration.MessageHandlers.Add(new SDataHandler());
 
         }
