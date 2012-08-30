@@ -14,7 +14,6 @@ namespace Sage.SDataHandler
     {
 
         static List<string> DefaultAssemblies = new List<string>{
-                                        //"Sage.SDataHandler.dll",
                                         "System.Web.Http.dll"
                                         //, "Microsoft.Practices.Unity.dll"
                                         };
