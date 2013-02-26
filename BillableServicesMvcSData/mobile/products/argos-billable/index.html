@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html manifest="index.manifest">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no,email=no,address=no" />
+
+    <title>Sage Service</title>
+
+    <link rel="apple-touch-icon-precomposed" href="content/images/AppIcon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="content/images/AppIcon-114x114.png" />
+
+    <link rel="apple-touch-startup-image" href="content/images/loading.png" />
+
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="content/platform/css/layout.css" />
+    <link type="text/css" rel="stylesheet" href="content/platform/css/theme.css" />
+    <link type="text/css" rel="stylesheet" href="content/css/theme.css" />
+    <link type="text/css" rel="stylesheet" href="content/css/app.css" />
+
+    <!-- Dojo -->
+    <script type="text/javascript" src="content/dojo/dojo/dojo.js" data-dojo-config="parseOnLoad:false, async:true, blankGif:'content/images/blank.gif'"></script>
+    <script type="text/javascript">
+    require({
+        baseUrl: "./",
+        packages: [
+            { name: 'dojo', location: 'content/dojo/dojo' },
+            { name: 'dijit', location: 'content/dojo/dijit' },
+            { name: 'dojox', location: 'content/dojo/dojox' }
+        ]
+    });
+    </script>
+    <script type="text/javascript" src="content/dojo/dojox/gfx.js"></script>
+    <script type="text/javascript" src="content/dojo/dojo-dependencies.js"></script>
+
+    <!-- Core -->
+    <script type="text/javascript" src="content/javascript/argos-dependencies.js"></script>
+    <script type="text/javascript" src="content/javascript/argos-sdk.js"></script>
+    <script type="text/javascript">
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    </script>
+
+    <!-- Application -->
+    <script type="text/javascript" src="content/javascript/argos-billable.js"></script>
+
+    <!-- Modules -->
+    <!--{{modules}}-->
+
+    <script type="text/javascript">
+    (function() {
+        var application = 'Mobile/BillableServices/Application',
+            configuration = [
+                'configuration/production'
+            ];
+        require([application].concat(configuration), function(application, configuration) {
+            var localization = [
+                'localization/en',
+                'localization/billable/en'
+            ];
+            require(localization.concat('dojo/domReady!'), function() {
+                var instance = new application(configuration);
+
+                instance.activate();
+                instance.startup();
+                instance.run();
+            });
+        });
+    })();
+    </script>
+</head>
+<body class="has-hidden-plus-bar">
+</body>
+</html>

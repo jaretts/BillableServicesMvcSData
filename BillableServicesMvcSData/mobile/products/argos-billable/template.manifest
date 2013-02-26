@@ -1,0 +1,29 @@
+CACHE MANIFEST
+@version
+@culture
+
+CACHE:
+# css
+@include 'content/platform/css'
+@include 'content/css'
+
+# images
+@include 'content/platform/images'
+@include 'content/images'
+
+# dojo
+@include 'content/dojo', /.*(?<!uncompressed|-debug)\.js$/i
+
+# application
+@include 'content/javascript', /.*(?<!-debug)\.js$/i
+
+# environment
+@include 'configuration', /^production.js$/i
+
+# localization
+@localize 'localization', '{0}.js'
+
+NETWORK:
+../sdata/
+http://sageapi.cloudapp.net/sdata/
+https://sageapi.cloudapp.net/sdata/

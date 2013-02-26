@@ -16,11 +16,6 @@ namespace BillableModel.Models
     [DataContract]
     public partial class ServiceCharge : SDataModelEntity
     {
-        public ServiceCharge()
-        {
-            this.ServiceDetails = new HashSet<ServiceDetail>();
-        }
-    
     	[DataMember]
         public int ServiceChargeID { get; set; }
     	[DataMember]
@@ -31,17 +26,23 @@ namespace BillableModel.Models
         public System.DateTime ServiceDate { get; set; }
     	[DataMember]
         public int Status { get; set; }
-    	[DataMember]
+    	[DataMember] 
         public int PaymentMethod { get; set; }
     	[DataMember]
         public string Recipient { get; set; }
     	[DataMember]
         public string Note { get; set; }
-    
-    	[DataMember]
-        public virtual ICollection<ServiceDetail> ServiceDetails { get; set; }
-    	[DataMember]
-        public virtual Project Project { get; set; }
+
+        [DataMember]
+        public List<ServiceDetail> Details;
+
+        [DataMember]
+        public vwsProject Project;
+
+        [DataMember]
+        public Customer Customer;
+
+
     }
     
 }

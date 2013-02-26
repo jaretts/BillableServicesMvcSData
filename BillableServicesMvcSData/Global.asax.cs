@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Sage.SDataHandler;
+using WebApiSecurity;
 
 namespace BillableServicesMvcSData
 {
@@ -20,18 +21,21 @@ namespace BillableServicesMvcSData
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            //SecurityConfig.ConfigureGlobal(GlobalConfiguration.Configuration);
+
             // These 3 lines add SData Support:
 
             // 1. Register SData Routes
-            SDataRoutesUtil.RegisterSDataRoutes("sdata/billserv/billserv/-", RouteTable.Routes);
+            SDataRoutesUtil.GetInstance().RegisterSDataRoutes("sdata/billserv/billserv/-", RouteTable.Routes);
 
             // 2. Call BuildDefaultController with no arguments and DependencyManager will search 
             // the server's bin directory for Repository (implements) IRepository & Model (extends) SDataModelEntity
             // Make sure required DLLs are in bin directory; E.G. BillableModel
-            DependencyManager.BuildDefaultControllers();
+            //DependencyManager.BuildDefaultControllers();
 
             // 3. Add SData JSON and URL handling support
-            GlobalConfiguration.Configuration.MessageHandlers.Add(new SDataHandler());
+            SDataHandler sh = new SDataHandler();
+            GlobalConfiguration.Configuration.MessageHandlers.Add(sh);
 
         }
 

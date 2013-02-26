@@ -43,7 +43,10 @@ namespace Sage.SDataHandler
             if (httpResponse.Content != null && httpResponse.IsSuccessStatusCode)
             {
                 Uri reqUri = httpResponse.RequestMessage.RequestUri;
-                this.url = reqUri.AbsoluteUri;
+                string urlval = reqUri.Scheme + "://" + reqUri.Authority + reqUri.LocalPath;
+
+                this.url = urlval;
+                //this.url = reqUri.AbsoluteUri;
                 this.TotalResults = 1;
                 this.ItemsPerPage = 1;
 
@@ -60,20 +63,28 @@ namespace Sage.SDataHandler
                         this.ItemsPerPage = enumResponseObject.Count();
 
                         int nxtStart = ItemsPerPage + StartIndex;
-                        this.Next = SDataUriUtil.ReplaceSingleParam(reqUri, SDataUriKeys.SDATA_STARTINDEX, "" + nxtStart).AbsoluteUri;
+                        int countParam = SDataUriUtil.GetSDataCountValue(reqUri);
+                        if (countParam < 0)
+                            countParam = 10;
+
+                        Next = urlval + "?" + SDataUriKeys.SDATA_STARTINDEX + "=" + nxtStart + "&" + SDataUriKeys.SDATA_COUNT + "=" + countParam;
+                        //Next = SDataUriUtil.ReplaceSingleParam(reqUri, SDataUriKeys.SDATA_STARTINDEX, "" + nxtStart).AbsoluteUri;
 
                         int prvStart = StartIndex - ItemsPerPage;
                         if (prvStart > 0)
                         {
-                            this.previous = SDataUriUtil.ReplaceSingleParam(reqUri, SDataUriKeys.SDATA_STARTINDEX, "" + prvStart).AbsoluteUri;
+                            previous = urlval + "?" + SDataUriKeys.SDATA_STARTINDEX + "=" + prvStart + "&" + SDataUriKeys.SDATA_COUNT + "=" + countParam;
+                            //previous = SDataUriUtil.ReplaceSingleParam(reqUri, SDataUriKeys.SDATA_STARTINDEX, "" + prvStart).AbsoluteUri;
                         }
                         else
                         {
                             this.previous = "";
                         }
 
-                        this.First = SDataUriUtil.ReplaceSingleParam(reqUri, SDataUriKeys.SDATA_STARTINDEX, "" + 1).AbsoluteUri;
-                        this.Last = this.url;
+                        First = urlval + "?" + SDataUriKeys.SDATA_STARTINDEX + "=1&" + SDataUriKeys.SDATA_COUNT + "=" + countParam;
+                        //First = SDataUriUtil.ReplaceSingleParam(reqUri, SDataUriKeys.SDATA_STARTINDEX, "" + 1).AbsoluteUri;
+                        this.Last = Next; // TODO must resolve how many more pages
+                        //this.Last = this.url;
                     }
                 }
             }

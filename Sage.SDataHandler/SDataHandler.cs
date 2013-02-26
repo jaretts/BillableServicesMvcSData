@@ -6,11 +6,43 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Thinktecture.IdentityModel.Tokens.Http;
+using System.Web.Http;
+using System.Web.Http.Dispatcher;
+using Google.Apis.Authentication.OAuth2;
+using Google.Apis.Util;
 
 namespace Sage.SDataHandler
 {
-    public class SDataHandler : DelegatingHandler
+    public class SDataHandler : DelegatingHandler //AuthenticationHandler
     {
+        /*
+        public SDataHandler() : base( CreateConfiguration() ) {}
+
+        public static AuthenticationConfiguration CreateConfiguration()
+        {
+            var config = new AuthenticationConfiguration
+            {
+                DefaultAuthenticationScheme = "Basic",
+            };
+
+            #region Basic Authentication
+            config.AddBasicAuthentication((userName, password) => userName == password);
+            #endregion
+
+            return config;
+        }
+        */
+
+
+        public SDataHandler(HttpConfiguration httpConfiguration)
+        {
+            InnerHandler = new HttpControllerDispatcher(httpConfiguration);
+        }
+
+        public SDataHandler()
+        {
+        }
 
         protected override Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
@@ -25,6 +57,9 @@ namespace Sage.SDataHandler
             Uri newUri = SDataUriUtil.TranslateUri(originalUri, SDataUriKeys.CONVERT_TO_ODATA);
 
             request.RequestUri = newUri;
+
+            /* if (HttpContext.Current.Request["code"] != null)
+                _authenticator.LoadAccessToken();*/
 
             return base.SendAsync(request, cancellationToken).ContinueWith(
                 (task) =>

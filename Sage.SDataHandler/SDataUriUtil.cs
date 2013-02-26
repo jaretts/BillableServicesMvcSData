@@ -13,10 +13,20 @@ namespace Sage.SDataHandler
         {
             NameValueCollection query = requestUri.ParseQueryString();
             string translatedUriQuery = "";
+            bool foundStartIndex = false, foundOrderBy = false;
 
             foreach (string key in query.AllKeys) // <-- No duplicates returned.
             {
                 string translatedKey;
+
+                if (key.ToLower().Equals(SDataUriKeys.ODATA_STARTINDEX.ToLower()) || key.ToLower().Equals(SDataUriKeys.SDATA_STARTINDEX.ToLower()))
+                {
+                    foundStartIndex = true;
+                }
+                else if (key.ToLower().Equals(SDataUriKeys.ODATA_ORDERBY.ToLower()) || key.ToLower().Equals(SDataUriKeys.SDATA_ORDERBY.ToLower()))
+                {
+                    foundOrderBy = true;
+                }
 
                 // check for startIndex or $skip
                 ConvertStartIndexValue(query, key, convertDirection);
@@ -50,6 +60,21 @@ namespace Sage.SDataHandler
             }
             else
             {
+                if (foundStartIndex && !foundOrderBy)
+                {
+                    // need to add an orderby because can't do skip without it
+                    if (convertDirection == SDataUriKeys.CONVERT_TO_ODATA)
+                    {
+                        translatedUriQuery += "&" + SDataUriKeys.ODATA_ORDERBY;
+                    }
+                    else
+                    {
+                        translatedUriQuery += "&" + SDataUriKeys.ODATA_ORDERBY;
+                    }
+
+                    translatedUriQuery += "='ID'";
+                }
+
                 // Need to replace the old Query portion on Uri
                 retValue = ReplaceQueryPortionOfUri(requestUri, translatedUriQuery);
             }
@@ -188,7 +213,24 @@ namespace Sage.SDataHandler
 
             if (!String.IsNullOrEmpty(translatedKey))
             {
-                // found something
+                // TODO remove this. This is a workaround for error in Argos where 
+                // a query like: "(UserID eq 1 and (Status eq 0) and (ProjectID eq \"1\") )"
+                // is sent but ProjectID is not a numeric so there should not be quo aroud it
+                // this is a workaround for POC that simply finds ID (all should be numeric) and 
+                // removes quo if URI where contains quo
+                if (value != null && value.Contains("ID eq \""))
+                {
+                    // need to strip quo
+                    // TODO fix Argos Client should not have " around ProjectID
+                    int quoPos = value.IndexOf("ID eq \"") + "ID eq \"".Length - 1;
+
+                    value = value.Remove(quoPos, 1);
+
+                    int quoPos2 = value.IndexOf('"', quoPos);
+
+                    value = value.Remove(quoPos2, 1);
+                }
+
                 retValue = translatedKey + "=" + value;
             }
 
@@ -233,7 +275,7 @@ namespace Sage.SDataHandler
 
             if (String.IsNullOrEmpty(retVal))
             {
-                return 1;
+                return -1;
             }
             else
             {

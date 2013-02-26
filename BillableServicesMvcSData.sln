@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSetRepository", "DbSetRep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sage.SDataHandler", "Sage.SDataHandler\Sage.SDataHandler.csproj", "{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "WindowsAzureProject2", "WindowsAzureProject2\WindowsAzureProject2.ccproj", "{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,16 @@ Global
 		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EDC5114D-CE1C-4043-81ED-80CDB9D2149F}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4F25744D-4FC2-49C3-94FE-1DECD214DCE2}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BillableServicesModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="BillableServicesModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="BillableServicesModelStoreContainer">
           <EntitySet Name="BillingSchedules" EntityType="BillableServicesModel.Store.BillingSchedules" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Contacts" EntityType="BillableServicesModel.Store.Contacts" store:Type="Tables" Schema="dbo" />
@@ -14,6 +14,56 @@
           <EntitySet Name="ServiceDetails" EntityType="BillableServicesModel.Store.ServiceDetails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ServiceTypes" EntityType="BillableServicesModel.Store.ServiceTypes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="BillableServicesModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="vwsProjects" EntityType="BillableServicesModel.Store.vwsProjects" store:Type="Views" store:Schema="dbo" store:Name="vwsProjects">
+            <DefiningQuery>SELECT 
+      [vwsProjects].[TenantID] AS [TenantID], 
+      [vwsProjects].[ProjectID] AS [ProjectID], 
+      [vwsProjects].[ProjectDescription] AS [ProjectDescription], 
+      [vwsProjects].[ProjectDate] AS [ProjectDate], 
+      [vwsProjects].[CustomerID] AS [CustomerID], 
+      [vwsProjects].[Budget] AS [Budget], 
+      [vwsProjects].[BilledAmt] AS [BilledAmt], 
+      [vwsProjects].[CustomerName] AS [CustomerName]
+      FROM [dbo].[vwsProjects] AS [vwsProjects]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwsServiceCharges" EntityType="BillableServicesModel.Store.vwsServiceCharges" store:Type="Views" store:Schema="dbo" store:Name="vwsServiceCharges">
+            <DefiningQuery>SELECT 
+      [vwsServiceCharges].[ServiceChargeID] AS [ServiceChargeID], 
+      [vwsServiceCharges].[TenantID] AS [TenantID], 
+      [vwsServiceCharges].[ServiceDate] AS [ServiceDate], 
+      [vwsServiceCharges].[ApprovedDate] AS [ApprovedDate], 
+      [vwsServiceCharges].[UserID] AS [UserID], 
+      [vwsServiceCharges].[UserName] AS [UserName], 
+      [vwsServiceCharges].[CustomerID] AS [CustomerID], 
+      [vwsServiceCharges].[CustomerName] AS [CustomerName], 
+      [vwsServiceCharges].[ProjectID] AS [ProjectID], 
+      [vwsServiceCharges].[ProjectDescription] AS [ProjectDescription], 
+      [vwsServiceCharges].[Budget] AS [Budget], 
+      [vwsServiceCharges].[BilledAmt] AS [BilledAmt], 
+      [vwsServiceCharges].[PaymentMethod] AS [PaymentMethod], 
+      [vwsServiceCharges].[Status] AS [Status], 
+      [vwsServiceCharges].[Note] AS [Note], 
+      [vwsServiceCharges].[Recipient] AS [Recipient]
+      FROM [dbo].[vwsServiceCharges] AS [vwsServiceCharges]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwsUserChargesDaily" EntityType="BillableServicesModel.Store.vwsUserChargesDaily" store:Type="Views" store:Schema="dbo" store:Name="vwsUserChargesDaily">
+            <DefiningQuery>SELECT 
+      [vwsUserChargesDaily].[UserID] AS [UserID], 
+      [vwsUserChargesDaily].[ServiceDate] AS [ServiceDate], 
+      [vwsUserChargesDaily].[Amount] AS [Amount]
+      FROM [dbo].[vwsUserChargesDaily] AS [vwsUserChargesDaily]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwsUsers" EntityType="BillableServicesModel.Store.vwsUsers" store:Type="Views" store:Schema="dbo" store:Name="vwsUsers">
+            <DefiningQuery>SELECT 
+      [vwsUsers].[UserID] AS [UserID], 
+      [vwsUsers].[UserName] AS [UserName], 
+      [vwsUsers].[TenantID] AS [TenantID], 
+      [vwsUsers].[EmailAddress] AS [EmailAddress], 
+      [vwsUsers].[Phone] AS [Phone], 
+      [vwsUsers].[Title] AS [Title], 
+      [vwsUsers].[Performance] AS [Performance]
+      FROM [dbo].[vwsUsers] AS [vwsUsers]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
         <EntityType Name="BillingSchedules">
           <Key>
@@ -23,6 +73,7 @@
           <Property Name="BillingDate" Type="varchar" MaxLength="25" />
           <Property Name="CustomerID" Type="int" />
           <Property Name="Amount" Type="float" />
+          <Property Name="TenantID" Type="int" />
         </EntityType>
         <EntityType Name="Contacts">
           <Key>
@@ -31,9 +82,9 @@
           <Property Name="ContactID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="ContactName" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="ContactTitle" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="OfficeEmailAddress" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="PersonalEmailAddress" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ContactTitle" Type="varchar" MaxLength="50" />
+          <Property Name="OfficeEmailAddress" Type="varchar" MaxLength="50" />
+          <Property Name="PersonalEmailAddress" Type="varchar" MaxLength="50" />
           <Property Name="OfficePhone" Type="varchar" MaxLength="20" />
           <Property Name="CellPhone" Type="varchar" MaxLength="20" />
           <Property Name="HomePhone" Type="varchar" MaxLength="20" />
@@ -44,13 +95,13 @@
           </Key>
           <Property Name="CustomerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CustomerName" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="CustomerKey" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="CustomerKey" Type="varchar" MaxLength="10" />
           <Property Name="TenantID" Type="int" Nullable="false" />
-          <Property Name="StreetAddress" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="City" Type="varchar" Nullable="false" MaxLength="25" />
-          <Property Name="StateProvince" Type="varchar" Nullable="false" MaxLength="25" />
-          <Property Name="PostalCode" Type="varchar" Nullable="false" MaxLength="10" />
-          <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="StreetAddress" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="25" />
+          <Property Name="StateProvince" Type="varchar" MaxLength="25" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="10" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
           <Property Name="AccountType" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Projects">
@@ -59,7 +110,7 @@
           </Key>
           <Property Name="ProjectID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ProjectDescription" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="ProjectDate" Type="date" Nullable="false" />
+          <Property Name="ProjectDate" Type="datetime" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="Budget" Type="float" Nullable="false" />
           <Property Name="BilledAmt" Type="float" Nullable="false" />
@@ -71,8 +122,8 @@
           <Property Name="ServiceChargeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="ProjectID" Type="int" Nullable="false" />
-          <Property Name="ServiceDate" Type="date" Nullable="false" />
-          <Property Name="ApprovedDate" Type="date" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="ApprovedDate" Type="datetime" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="PaymentMethod" Type="int" Nullable="false" />
           <Property Name="Recipient" Type="varchar" MaxLength="255" />
@@ -94,7 +145,8 @@
             <PropertyRef Name="ServiceTypeID" />
           </Key>
           <Property Name="ServiceTypeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="ServiceDescription" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="ServiceDescription" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="LongDescription" Type="varchar" MaxLength="50" />
           <Property Name="TenantID" Type="int" />
           <Property Name="UOM" Type="varchar" Nullable="false" MaxLength="20" />
           <Property Name="Rate" Type="float" Nullable="false" />
@@ -113,65 +165,97 @@
           <Property Name="Performance" Type="int" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwBillingDetail' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwBillingDetailIndex' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwBillingSchedules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwClientServiceCharges' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwProjects' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwsContacts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwsCustomers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwServiceCharges' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
       warning 6002: The table/view 'BillableServices.dbo.vwsProjects' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwsServiceChargeDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+        <EntityType Name="vwsProjects">
+          <Key>
+            <PropertyRef Name="TenantID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ProjectDescription" />
+            <PropertyRef Name="ProjectDate" />
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="Budget" />
+            <PropertyRef Name="BilledAmt" />
+            <PropertyRef Name="CustomerName" />
+          </Key>
+          <Property Name="TenantID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="ProjectDescription" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ProjectDate" Type="datetime" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="Budget" Type="float" Nullable="false" />
+          <Property Name="BilledAmt" Type="float" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'BillableServices.dbo.vwsServiceCharges' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwsServiceTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+        <EntityType Name="vwsServiceCharges">
+          <Key>
+            <PropertyRef Name="ServiceChargeID" />
+            <PropertyRef Name="TenantID" />
+            <PropertyRef Name="ServiceDate" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="CustomerName" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ProjectDescription" />
+            <PropertyRef Name="Budget" />
+            <PropertyRef Name="BilledAmt" />
+            <PropertyRef Name="PaymentMethod" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Name="ServiceChargeID" Type="int" Nullable="false" />
+          <Property Name="TenantID" Type="int" Nullable="false" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="ApprovedDate" Type="datetime" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="ProjectDescription" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Budget" Type="float" Nullable="false" />
+          <Property Name="BilledAmt" Type="float" Nullable="false" />
+          <Property Name="PaymentMethod" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Note" Type="varchar" MaxLength="255" />
+          <Property Name="Recipient" Type="varchar" MaxLength="255" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'BillableServices.dbo.vwsUserChargesDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
+        <EntityType Name="vwsUserChargesDaily">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="ServiceDate" Type="date" />
+          <Property Name="Amount" Type="float" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'BillableServices.dbo.vwsUsers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwTenantChargesDaily' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwTenantChargesMonthly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'BillableServices.dbo.vwTenantChargesWeekly' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
-        <!--Errors Found During Generation:
-      warning 6013: The table/view 'BillableServices.dbo.vwTotalUserCharges' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-      
-      <EntityType Name="vwTotalUserCharges">
-        <Property Name="TenantID" Type="int" />
-        <Property Name="Amount" Type="float" />
-      </EntityType>-->
-      </Schema>
-    </edmx:StorageModels>
+        <EntityType Name="vwsUsers">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="TenantID" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="Phone" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Performance" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="TenantID" Type="int" Nullable="false" />
+          <Property Name="EmailAddress" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="Title" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="Performance" Type="int" Nullable="false" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BillableServicesModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -184,18 +268,10 @@
           <EntitySet Name="ServiceDetails" EntityType="BillableServicesModel.ServiceDetail" />
           <EntitySet Name="ServiceTypes" EntityType="BillableServicesModel.ServiceType" />
           <EntitySet Name="Users" EntityType="BillableServicesModel.User" />
-          <AssociationSet Name="ServiceChargeServiceDetail" Association="BillableServicesModel.ServiceChargeServiceDetail">
-            <End Role="ServiceCharge" EntitySet="ServiceCharges" />
-            <End Role="ServiceDetail" EntitySet="ServiceDetails" />
-          </AssociationSet>
-          <AssociationSet Name="ServiceTypeServiceDetail" Association="BillableServicesModel.ServiceTypeServiceDetail">
-            <End Role="ServiceType" EntitySet="ServiceTypes" />
-            <End Role="ServiceDetail" EntitySet="ServiceDetails" />
-          </AssociationSet>
-          <AssociationSet Name="ProjectServiceCharge" Association="BillableServicesModel.ProjectServiceCharge">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="ServiceCharge" EntitySet="ServiceCharges" />
-          </AssociationSet>
+          <EntitySet Name="vwsUsers" EntityType="BillableServicesModel.vwsUser" />
+          <EntitySet Name="vwsUserChargesDailies" EntityType="BillableServicesModel.vwsUserChargesDaily" />
+          <EntitySet Name="vwsProjects" EntityType="BillableServicesModel.vwsProject" />
+          <EntitySet Name="vwsServiceCharges" EntityType="BillableServicesModel.vwsServiceCharge" />
           </EntityContainer>
         <EntityType Name="BillingSchedule">
           <Key>
@@ -205,6 +281,7 @@
           <Property Name="BillingDate" Type="String" MaxLength="25" Unicode="false" FixedLength="false" />
           <Property Name="CustomerID" Type="Int32" />
           <Property Name="Amount" Type="Double" />
+          <Property Type="Int32" Name="TenantID" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
@@ -245,7 +322,6 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="Budget" Type="Double" Nullable="false" />
           <Property Name="BilledAmt" Type="Double" Nullable="false" />
-          <NavigationProperty Name="ServiceCharges" Relationship="BillableServicesModel.ProjectServiceCharge" FromRole="Project" ToRole="ServiceCharge" />
         </EntityType>
         <EntityType Name="ServiceCharge">
           <Key>
@@ -259,8 +335,6 @@
           <Property Name="PaymentMethod" Nullable="false" Type="Int32" />
           <Property Name="Recipient" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
           <Property Name="Note" MaxLength="255" FixedLength="false" Unicode="false" Type="String" />
-          <NavigationProperty Name="ServiceDetails" Relationship="BillableServicesModel.ServiceChargeServiceDetail" FromRole="ServiceCharge" ToRole="ServiceDetail" />
-          <NavigationProperty Name="Project" Relationship="BillableServicesModel.ProjectServiceCharge" FromRole="ServiceCharge" ToRole="Project" />
         </EntityType>
         <EntityType Name="ServiceDetail">
           <Key>
@@ -272,8 +346,6 @@
           <Property Name="Qty" Type="Double" Nullable="false" />
           <Property Name="Rate" Type="Double" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="ServiceCharge" Relationship="BillableServicesModel.ServiceChargeServiceDetail" FromRole="ServiceDetail" ToRole="ServiceCharge" />
-          <NavigationProperty Name="ServiceType" Relationship="BillableServicesModel.ServiceTypeServiceDetail" FromRole="ServiceDetail" ToRole="ServiceType" />
         </EntityType>
         <EntityType Name="ServiceType">
           <Key>
@@ -285,7 +357,7 @@
           <Property Name="UOM" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
           <Property Name="Rate" Type="Double" Nullable="false" />
           <Property Name="Taxable" Type="String" MaxLength="1" Unicode="false" FixedLength="false" />
-          <NavigationProperty Name="ServiceDetails" Relationship="BillableServicesModel.ServiceTypeServiceDetail" FromRole="ServiceType" ToRole="ServiceDetail" />
+          <Property Type="String" Name="LongDescription" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -302,42 +374,85 @@
         <EntityType Name="ApprovedServiceCharge" BaseType="BillableServicesModel.ServiceCharge" >
           <Property Type="DateTime" Name="ApprovedDate" Nullable="false" />
         </EntityType>
-        <Association Name="ServiceChargeServiceDetail">
-          <End Type="BillableServicesModel.ServiceCharge" Role="ServiceCharge" Multiplicity="1" />
-          <End Type="BillableServicesModel.ServiceDetail" Role="ServiceDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ServiceCharge">
-              <PropertyRef Name="ServiceChargeID" />
-            </Principal>
-            <Dependent Role="ServiceDetail">
-              <PropertyRef Name="ServiceChargeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ServiceTypeServiceDetail">
-          <End Type="BillableServicesModel.ServiceType" Role="ServiceType" Multiplicity="1" />
-          <End Type="BillableServicesModel.ServiceDetail" Role="ServiceDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ServiceType">
-              <PropertyRef Name="ServiceTypeID" />
-            </Principal>
-            <Dependent Role="ServiceDetail">
-              <PropertyRef Name="ServiceTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ProjectServiceCharge">
-          <End Type="BillableServicesModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="BillableServicesModel.ServiceCharge" Role="ServiceCharge" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="ServiceCharge">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EntityType Name="vwsUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="TenantID" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="Phone" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="Performance" />
+          </Key>
+          <Property Type="Int32" Name="UserID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="TenantID" Nullable="false" />
+          <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="Performance" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwsUserChargesDaily">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="DateTime" Name="ServiceDate" />
+          <Property Type="Double" Name="Amount" />
+        </EntityType>
+        <EntityType Name="vwsProject">
+          <Key>
+            <PropertyRef Name="TenantID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ProjectDescription" />
+            <PropertyRef Name="ProjectDate" />
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="Budget" />
+            <PropertyRef Name="BilledAmt" />
+            <PropertyRef Name="CustomerName" />
+          </Key>
+          <Property Type="Int32" Name="TenantID" Nullable="false" />
+          <Property Type="Int32" Name="ProjectID" Nullable="false" />
+          <Property Type="String" Name="ProjectDescription" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="ProjectDate" Nullable="false" />
+          <Property Type="Int32" Name="CustomerID" Nullable="false" />
+          <Property Type="Double" Name="Budget" Nullable="false" />
+          <Property Type="Double" Name="BilledAmt" Nullable="false" />
+          <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vwsServiceCharge">
+          <Key>
+            <PropertyRef Name="ServiceChargeID" />
+            <PropertyRef Name="TenantID" />
+            <PropertyRef Name="ServiceDate" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="CustomerName" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="ProjectDescription" />
+            <PropertyRef Name="Budget" />
+            <PropertyRef Name="BilledAmt" />
+            <PropertyRef Name="PaymentMethod" />
+            <PropertyRef Name="Status" />
+          </Key>
+          <Property Type="Int32" Name="ServiceChargeID" Nullable="false" />
+          <Property Type="Int32" Name="TenantID" Nullable="false" />
+          <Property Type="DateTime" Name="ServiceDate" Nullable="false" />
+          <Property Type="DateTime" Name="ApprovedDate" />
+          <Property Type="Int32" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="CustomerID" Nullable="false" />
+          <Property Type="String" Name="CustomerName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ProjectID" Nullable="false" />
+          <Property Type="String" Name="ProjectDescription" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Double" Name="Budget" Nullable="false" />
+          <Property Type="Double" Name="BilledAmt" Nullable="false" />
+          <Property Type="Int32" Name="PaymentMethod" Nullable="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="String" Name="Note" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Recipient" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -347,6 +462,7 @@
           <EntitySetMapping Name="BillingSchedules">
             <EntityTypeMapping TypeName="BillableServicesModel.BillingSchedule">
               <MappingFragment StoreEntitySet="BillingSchedules">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
                 <ScalarProperty Name="BillingScheduleID" ColumnName="BillingScheduleID" />
                 <ScalarProperty Name="BillingDate" ColumnName="BillingDate" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -433,6 +549,7 @@
           <EntitySetMapping Name="ServiceTypes">
             <EntityTypeMapping TypeName="BillableServicesModel.ServiceType">
               <MappingFragment StoreEntitySet="ServiceTypes">
+                <ScalarProperty Name="LongDescription" ColumnName="LongDescription" />
                 <ScalarProperty Name="ServiceTypeID" ColumnName="ServiceTypeID" />
                 <ScalarProperty Name="ServiceDescription" ColumnName="ServiceDescription" />
                 <ScalarProperty Name="TenantID" ColumnName="TenantID" />
@@ -452,6 +569,64 @@
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Performance" ColumnName="Performance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwsUsers">
+            <EntityTypeMapping TypeName="BillableServicesModel.vwsUser">
+              <MappingFragment StoreEntitySet="vwsUsers">
+                <ScalarProperty Name="Performance" ColumnName="Performance" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwsUserChargesDailies">
+            <EntityTypeMapping TypeName="BillableServicesModel.vwsUserChargesDaily">
+              <MappingFragment StoreEntitySet="vwsUserChargesDaily">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwsProjects">
+            <EntityTypeMapping TypeName="BillableServicesModel.vwsProject">
+              <MappingFragment StoreEntitySet="vwsProjects">
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="BilledAmt" ColumnName="BilledAmt" />
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="ProjectDate" ColumnName="ProjectDate" />
+                <ScalarProperty Name="ProjectDescription" ColumnName="ProjectDescription" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwsServiceCharges">
+            <EntityTypeMapping TypeName="BillableServicesModel.vwsServiceCharge">
+              <MappingFragment StoreEntitySet="vwsServiceCharges">
+                <ScalarProperty Name="Recipient" ColumnName="Recipient" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="BilledAmt" ColumnName="BilledAmt" />
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="ProjectDescription" ColumnName="ProjectDescription" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="ServiceChargeID" ColumnName="ServiceChargeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -492,18 +667,10 @@
           <ConnectorPoint PointX="7.125" PointY="8.25" />
           <ConnectorPoint PointX="7.125" PointY="8.625" />
         </InheritanceConnector>
-        <AssociationConnector Association="BillableServicesModel.ServiceChargeServiceDetail">
-          <ConnectorPoint PointX="3.875" PointY="7.8122460937500007" />
-          <ConnectorPoint PointX="2.375" PointY="7.8122460937500007" />
-        </AssociationConnector>
-        <AssociationConnector Association="BillableServicesModel.ServiceTypeServiceDetail">
-          <ConnectorPoint PointX="3.125" PointY="9.6535953776041659" />
-          <ConnectorPoint PointX="2.375" PointY="9.6535953776041659" />
-        </AssociationConnector>
-        <AssociationConnector Association="BillableServicesModel.ProjectServiceCharge">
-          <ConnectorPoint PointX="6.5" PointY="6.5574446614583337" />
-          <ConnectorPoint PointX="5.375" PointY="6.5574446614583337" />
-        </AssociationConnector>
+        <EntityTypeShape EntityType="BillableServicesModel.vwsUser" Width="1.5" PointX="7.375" PointY="0.75" Height="2.3648893229166674" />
+        <EntityTypeShape EntityType="BillableServicesModel.vwsUserChargesDaily" Width="1.5" PointX="8.375" PointY="8.75" Height="1.5956835937500031" />
+        <EntityTypeShape EntityType="BillableServicesModel.vwsProject" Width="1.5" PointX="9.375" PointY="0.75" Height="2.5571907552083317" />
+        <EntityTypeShape EntityType="BillableServicesModel.vwsServiceCharge" Width="1.5" PointX="0.75" PointY="10.75" Height="4.0956022135416674" />
         </Diagram>
     </Diagrams>
   </Designer>

@@ -33,5 +33,9 @@ namespace BillableModel.Models
         public DbSet<ServiceDetail> ServiceDetails { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<vwsUser> vwsUsers { get; set; }
+        public DbSet<vwsUserChargesDaily> vwsUserChargesDailies { get; set; }
+        public DbSet<vwsProject> vwsProjects { get; set; }
+        public DbSet<vwsServiceCharge> vwsServiceCharges { get; set; }
     }
 }

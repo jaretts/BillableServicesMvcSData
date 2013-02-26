@@ -28,10 +28,6 @@ namespace BillableModel.Models
         public double Rate { get; set; }
     	[DataMember]
         public string Note { get; set; }
-    
-        public virtual ServiceCharge ServiceCharge { get; set; }
-    	[DataMember]
-        public virtual ServiceType ServiceType { get; set; }
     }
     
 }

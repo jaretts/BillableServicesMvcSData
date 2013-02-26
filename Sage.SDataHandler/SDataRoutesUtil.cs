@@ -27,15 +27,59 @@ namespace Sage.SDataHandler
         public static HttpMethodConstraint HTTP_METHOD_PUT = new HttpMethodConstraint(new string[] { HTTP_VERB_PUT });
         public static HttpMethodConstraint HTTP_METHOD_DELETE = new HttpMethodConstraint(new string[] { HTTP_VERB_DELETE });
 
-        public static void RegisterSDataRoutes(string baseUrl, System.Web.Routing.RouteCollection routes)
+        private static SDataRoutesUtil theInstance;
+
+        string currentAuthority;
+
+        public string CurrentAuthority
+        {
+            get { return currentAuthority; }
+            set { currentAuthority = value; }
+        }
+
+        string currentBaseUrl;
+
+        public string CurrentBaseUrl
+        {
+            get { return currentBaseUrl; }
+            set { currentBaseUrl = value; }
+        }
+
+        private SDataRoutesUtil()
+        {
+            theInstance = this;
+        }
+
+        public static SDataRoutesUtil GetInstance()
+        {
+            if (theInstance == null)
+            {
+                theInstance = new SDataRoutesUtil();
+            }
+
+            return theInstance;
+        }
+
+
+        public void RegisterSDataRoutes(string baseUrl, System.Web.Routing.RouteCollection routes)
         {
             if(!baseUrl.EndsWith("/"))
             {
                 baseUrl += "/";
             }
 
+            currentBaseUrl = baseUrl;
+
             routes.MapHttpRoute(name: "SDataSingleResourceKind",
                  routeTemplate: baseUrl + "{controller}('{selector}')/{query}",
+                 defaults: new
+                 {
+                     query = RouteParameter.Optional,
+                     action = SDATA_ACTION_SINGLE
+                 });
+
+            routes.MapHttpRoute(name: "SDataSingleResourceKind2",
+                 routeTemplate: baseUrl + "{controller}({selector})/{query}",
                  defaults: new
                  {
                      query = RouteParameter.Optional,

@@ -61,7 +61,7 @@ namespace Sage.SData.Controllers
         // PUT api/customers/5
         [HttpPut]
         [ActionName(SDataRoutesUtil.SDATA_ACTION_SINGLE)]
-        public HttpResponseMessage Put(int selector, String select, T value)
+        public virtual HttpResponseMessage Put(int selector, String select, T value)
         {
             T resourceModified = null;
 
@@ -101,7 +101,7 @@ namespace Sage.SData.Controllers
         // POST single resource post; client sent single resource
         [HttpPost]
         [ActionName(SDataRoutesUtil.SDATA_ACTION_COLLECTION)]
-        public HttpResponseMessage Post(T value)
+        public virtual HttpResponseMessage Post(T value)
         {
             //T addedResource = respository.Post(value);
             HttpResponseMessage response;
@@ -121,7 +121,7 @@ namespace Sage.SData.Controllers
 
         [HttpDelete]
         [ActionName(SDataRoutesUtil.SDATA_ACTION_DELETE)]
-        public HttpResponseMessage Delete(int selector)
+        public virtual HttpResponseMessage Delete(int selector)
         {
             HttpResponseMessage retValue;
             T oldValue = GetSingle(selector, null, null);

@@ -24,6 +24,8 @@ namespace BillableModel.Models
         public Nullable<int> CustomerID { get; set; }
     	[DataMember]
         public Nullable<double> Amount { get; set; }
+    	[DataMember]
+        public Nullable<int> TenantID { get; set; }
     }
     
 }
