@@ -106,9 +106,6 @@
     <Compile Include="SDataUriKeys.cs" />
     <Compile Include="SDataUriUtil.cs" />
     <Compile Include="SingleResourceMetadata.cs" />
-    <Compile Include="SSO\AuthorizeAttribute.cs" />
-    <Compile Include="SSO\Controllers\SSOController.cs" />
-    <Compile Include="SSO\Controllers\SSOController_SignOn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Lib\ThirdParty\DotNetOpenAuth.LICENSE" />

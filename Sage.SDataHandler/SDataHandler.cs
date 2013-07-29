@@ -9,8 +9,6 @@ using System.Web;
 using Thinktecture.IdentityModel.Tokens.Http;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
-using Google.Apis.Authentication.OAuth2;
-using Google.Apis.Util;
 
 namespace Sage.SDataHandler
 {
